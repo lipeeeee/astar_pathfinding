@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace astart_pathfinding
 {
     /*
@@ -17,21 +19,17 @@ namespace astart_pathfinding
         {
             InitializeComponent();
 
-            // Initialize Coordinates
-            this.WindowState = FormWindowState.Maximized;
-            this.MaximumSize = new Size(this.Width, this.Height);
-            matrix = new int[this.Width, this.Height];
+            // Non-Nullable warning
+            matrix = new int[0,0];
         }
 
-        private void drawMatrix()
+        private void Form1_Load(object sender, EventArgs e)
         {
-            // Draw matrix 
-            SolidBrush myBrush = new SolidBrush(Color.Black);
-            Graphics formGraphics;
-            formGraphics = this.CreateGraphics();
-            formGraphics.FillRectangle(myBrush, Rectangle.Empty);
-            myBrush.Dispose();
-            formGraphics.Dispose();
+            // Initialize Coordinates
+            this.MaximumSize = new Size(this.Width, this.Height);
+            matrix = new int[this.Width, this.Height];
+
+            utils.fillBidemensionalMatrix(matrix, globals.matrixValues["empty"]);
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -40,9 +38,29 @@ namespace astart_pathfinding
             updateDimensions();
         }
 
+        private void drawMatrix()
+        {
+            SolidBrush myBrush = new(Color.Black);
+            Graphics formGraphics = this.CreateGraphics();
+            Pen p = new Pen(myBrush);
+
+            // Draw matrix 
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                // Vertical
+                formGraphics.DrawLine(p, i * globals.cellSize, 0, i * globals.cellSize, matrix.GetLength(0) * globals.cellSize);
+
+                // Horizontal
+                formGraphics.DrawLine(p, 0, i * globals.cellSize, matrix.GetLength(1) * globals.cellSize, i * globals.cellSize);
+            }
+
+            myBrush.Dispose();
+            formGraphics.Dispose();
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            utils.fillMatrix(matrix, globals.matrixValues["empty"]);
+            MessageBox.Show(matrix[0, 1] + "");
         }
 
         private void updateDimensions()

@@ -8,10 +8,15 @@ namespace astart_pathfinding
 {
     public static class utils
     {
-        public static void fillMatrix(int[,] matrix, int value)
+        public static void fillBidemensionalMatrix(int[,] matrix, int value)
         {
-            MessageBox.Show(matrix.GetLength(0).ToString());
-            MessageBox.Show(matrix.GetLength(1).ToString());
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    matrix[i, j] = value;
+                }
+            }
         }
     }
 }

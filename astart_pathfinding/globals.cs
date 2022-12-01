@@ -8,6 +8,8 @@ namespace astart_pathfinding
 {
     public static class globals
     {
+        public static int cellSize = 30;
+
         public static Dictionary<string, int> matrixValues = new Dictionary<string, int>()
         {
             {"empty", 0},
