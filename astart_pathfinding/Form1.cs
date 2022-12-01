@@ -34,17 +34,17 @@ namespace astart_pathfinding
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            drawMatrix();
+            drawGrid();
             updateDimensions();
         }
 
-        private void drawMatrix()
+        private void drawGrid()
         {
             SolidBrush myBrush = new(Color.Black);
             Graphics formGraphics = this.CreateGraphics();
-            Pen p = new Pen(myBrush);
+            Pen p = new(myBrush);
 
-            // Draw matrix 
+            // Draw matrix grid 
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 // Vertical
@@ -56,6 +56,47 @@ namespace astart_pathfinding
 
             myBrush.Dispose();
             formGraphics.Dispose();
+        }
+
+        // Color drawing
+        private void drawMatrixValues()
+        {
+            SolidBrush blackBrush = new(Color.Black);
+            SolidBrush redBrush = new(Color.Red);
+            SolidBrush greenBrush = new(Color.Green);
+            Graphics formGraphics = this.CreateGraphics();
+
+            int cur_x = 0, cur_y = 0;
+
+            // Color draw matrix values
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    if (matrix[i, j] == globals.matrixValues["empty"]) 
+                    { 
+
+                    }
+                    else if (matrix[i, j] == globals.matrixValues["wall"])
+                    {
+
+                    }
+                    else if (matrix[i, j] == globals.matrixValues["start"])
+                    {
+
+                    }
+                    else if (matrix[i, j] == globals.matrixValues["end"])
+                    {
+
+                    }
+                    else
+                        throw new Exception("matrix unbound value");
+
+                    cur_x += globals.cellSize;
+                }
+                cur_x = 0;
+                cur_y += globals.cellSize;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -13,7 +13,7 @@ namespace astart_pathfinding
         public static Dictionary<string, int> matrixValues = new Dictionary<string, int>()
         {
             {"empty", 0},
-            {"start", 1 },
+            {"start", 1},
             {"end", 2},
             {"wall", 3}
         };
