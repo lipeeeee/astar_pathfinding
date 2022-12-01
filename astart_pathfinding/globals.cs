@@ -8,8 +8,6 @@ namespace astart_pathfinding
 {
     public static class globals
     {
-        public static int matrixMaxValue = 2000;
-
         public static Dictionary<string, int> matrixValues = new Dictionary<string, int>()
         {
             {"empty", 0},
