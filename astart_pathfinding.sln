@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "astart_pathfinding", "astart_pathfinding\astart_pathfinding.csproj", "{8131BDAD-8B8F-45B1-A8B7-AB697A51124B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "astar_pathfinding", "astart_pathfinding\astar_pathfinding.csproj", "{8131BDAD-8B8F-45B1-A8B7-AB697A51124B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
