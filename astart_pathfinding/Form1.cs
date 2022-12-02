@@ -160,5 +160,60 @@ namespace astart_pathfinding
             utils.fillBidemensionalMatrix(matrix, globals.matrixValues["empty"]);
             renderMatrix();
         }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.E) 
+            {
+                // check if end exists already
+                bool foundEnd = false;
+                for (int i = 0; i < matrix.GetLength(0) && foundEnd == false; i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(1) && foundEnd == false; j++)
+                    {
+                        if (matrix[i, j] == globals.matrixValues["end"])
+                        {
+                            matrix[i, j] = globals.matrixValues["empty"];
+                            foundEnd = true;
+                        }
+                    }
+                }
+
+                // get cell
+                Point relativePoint = this.PointToClient(Cursor.Position);
+                int[] cell = utils.getCell(matrix, relativePoint.X, relativePoint.Y);
+                
+                matrix[cell[0], cell[1]] = globals.matrixValues["end"];
+                renderMatrix();
+            }
+            else if (e.KeyCode == Keys.S)
+            {
+                // check if start exists already
+                bool foundStart = false;
+                for (int i = 0; i < matrix.GetLength(0) && foundStart == false; i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(1) && foundStart == false; j++)
+                    {
+                        if (matrix[i, j] == globals.matrixValues["start"])
+                        {
+                            matrix[i, j] = globals.matrixValues["empty"];
+                            foundStart = true;
+                        }
+                    }
+                }
+
+                // get cell
+                Point relativePoint = this.PointToClient(Cursor.Position);
+                int[] cell = utils.getCell(matrix, relativePoint.X, relativePoint.Y);
+
+                matrix[cell[0], cell[1]] = globals.matrixValues["start"];
+                renderMatrix();
+            }
+            else if (e.KeyCode == Keys.C)
+            {
+                // send click
+                btnClear_Click(new object(), new EventArgs());
+            }
+        }
     }
 }
