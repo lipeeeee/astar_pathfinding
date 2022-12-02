@@ -125,7 +125,6 @@ namespace astart_pathfinding
             leftClick = (e.Button == MouseButtons.Left);
         }
 
-        // render cells dragged in mousedown
         private void Form1_MouseUp(object sender, MouseEventArgs e)
         {
             mouseDown = false;
@@ -154,6 +153,12 @@ namespace astart_pathfinding
                     subMatrixAdd = new List<int[]>();
                 } 
             }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            utils.fillBidemensionalMatrix(matrix, globals.matrixValues["empty"]);
+            renderMatrix();
         }
     }
 }
