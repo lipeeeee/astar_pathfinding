@@ -34,23 +34,25 @@
             // 
             // lblMatrixEndpoints
             // 
+            this.lblMatrixEndpoints.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMatrixEndpoints.AutoSize = true;
-            this.lblMatrixEndpoints.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblMatrixEndpoints.Location = new System.Drawing.Point(762, 0);
+            this.lblMatrixEndpoints.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblMatrixEndpoints.Location = new System.Drawing.Point(724, 9);
             this.lblMatrixEndpoints.Name = "lblMatrixEndpoints";
-            this.lblMatrixEndpoints.Size = new System.Drawing.Size(38, 15);
+            this.lblMatrixEndpoints.Size = new System.Drawing.Size(40, 17);
             this.lblMatrixEndpoints.TabIndex = 0;
             this.lblMatrixEndpoints.Text = "label1";
             // 
             // lblMousePos
             // 
+            this.lblMousePos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMousePos.AutoSize = true;
-            this.lblMousePos.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblMousePos.Location = new System.Drawing.Point(724, 0);
+            this.lblMousePos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblMousePos.Location = new System.Drawing.Point(724, 40);
             this.lblMousePos.Name = "lblMousePos";
-            this.lblMousePos.Size = new System.Drawing.Size(38, 15);
+            this.lblMousePos.Size = new System.Drawing.Size(39, 17);
             this.lblMousePos.TabIndex = 1;
-            this.lblMousePos.Text = "label1";
+            this.lblMousePos.Text = "10, 10";
             // 
             // Form1
             // 

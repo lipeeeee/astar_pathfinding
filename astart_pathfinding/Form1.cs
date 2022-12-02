@@ -126,7 +126,9 @@ namespace astart_pathfinding
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            lblMousePos.Text = e.X + ", " + e.Y;
+            // ONLY USE THIS TO DEBUG, THIS CAUSES onPaint() FUNCTION TO BE CALLED
+            // WHEN X OR Y GOES A DIGIT DOWN (100->99, 1000->999)
+            // lblMousePos.Text = e.X + ", " + e.Y;
         }
     }
 }
