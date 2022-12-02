@@ -36,6 +36,7 @@ namespace astart_pathfinding
         {
             drawGrid();
             updateDimensions();
+            drawMatrixValues();
         }
 
         private void drawGrid()
@@ -58,7 +59,7 @@ namespace astart_pathfinding
             formGraphics.Dispose();
         }
 
-        // Color drawing
+        // Color mapping
         private void drawMatrixValues()
         {
             SolidBrush blackBrush = new(Color.Black);
@@ -75,19 +76,19 @@ namespace astart_pathfinding
                 {
                     if (matrix[i, j] == globals.matrixValues["empty"]) 
                     { 
-
+                        // formGraphics.FillRectangle()
                     }
                     else if (matrix[i, j] == globals.matrixValues["wall"])
                     {
-
+                        formGraphics.FillRectangle(blackBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
                     }
                     else if (matrix[i, j] == globals.matrixValues["start"])
                     {
-
+                        formGraphics.FillRectangle(greenBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
                     }
                     else if (matrix[i, j] == globals.matrixValues["end"])
                     {
-
+                        formGraphics.FillRectangle(redBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
                     }
                     else
                         throw new Exception("matrix unbound value");
