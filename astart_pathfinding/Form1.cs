@@ -65,6 +65,7 @@ namespace astart_pathfinding
             SolidBrush blackBrush = new(Color.Black);
             SolidBrush redBrush = new(Color.Red);
             SolidBrush greenBrush = new(Color.Green);
+            SolidBrush emptyBrush = new(Color.WhiteSmoke);
             Graphics formGraphics = this.CreateGraphics();
 
             int cur_x = 0, cur_y = 0;
@@ -75,8 +76,8 @@ namespace astart_pathfinding
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     if (matrix[i, j] == globals.matrixValues["empty"]) 
-                    { 
-                        // formGraphics.FillRectangle()
+                    {
+                        formGraphics.FillRectangle(emptyBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
                     }
                     else if (matrix[i, j] == globals.matrixValues["wall"])
                     {
@@ -100,24 +101,32 @@ namespace astart_pathfinding
             }
         }
 
-        private void Form1_Click(object sender, EventArgs e)
+        private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
             // Brute force to know which cell clicked on
-            int[] ij = utils.getCell(matrix, MousePosition.X, MousePosition.Y);
-            matrix[ij[0], ij[1]] = globals.matrixValues["wall"];
+            int[] ij = utils.getCell(matrix, e.X, e.Y);
+            if (e.Button == MouseButtons.Left)
+                matrix[ij[0], ij[1]] = globals.matrixValues["wall"];
+            else
+                matrix[ij[0], ij[1]] = globals.matrixValues["empty"];
 
             renderMatrix();
         }
 
         private void renderMatrix()
         {
-            drawGrid();
             drawMatrixValues();
+            drawGrid();
         }
 
         private void updateDimensions()
         {
             lblMatrixEndpoints.Text = this.Width + "," + this.Height;      
+        }
+
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+            lblMousePos.Text = e.X + ", " + e.Y;
         }
     }
 }
