@@ -2,25 +2,20 @@ using System.Runtime.CompilerServices;
 
 namespace astart_pathfinding
 {
-    /*
-        1. Draw matrix
-        
-    */
-
-    /*
-        - Start maximized
-    */
-
     public partial class Form1 : Form
     {
         public int[,] matrix;
-        
+        public List<int[]> subMatrixAdd; // cells to add when mousedown
+        private bool mouseDown = false;
+        private bool leftClick = false;
+
         public Form1()
         {
             InitializeComponent();
 
             // Non-Nullable warning
             matrix = new int[0,0];
+            subMatrixAdd = new List<int[]>();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -123,12 +118,42 @@ namespace astart_pathfinding
         {
             lblMatrixEndpoints.Text = this.Width + "," + this.Height;      
         }
+  
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            leftClick = (e.Button == MouseButtons.Left);
+        }
+
+        // render cells dragged in mousedown
+        private void Form1_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            // ONLY USE THIS TO DEBUG, THIS CAUSES onPaint() FUNCTION TO BE CALLED
-            // WHEN X OR Y GOES A DIGIT DOWN (100->99, 1000->999)
-            // lblMousePos.Text = e.X + ", " + e.Y;
+            if (mouseDown)
+            {
+                subMatrixAdd.Add(new int[] { e.X, e.Y });
+            }
+            else
+            {
+                if (subMatrixAdd.Count > 0)
+                {
+                    foreach (int[] cell in subMatrixAdd)
+                    {
+                        int[] ij = utils.getCell(matrix, cell[0], cell[1]);
+                        if (leftClick)
+                            matrix[ij[0], ij[1]] = globals.matrixValues["wall"];
+                        else
+                            matrix[ij[0], ij[1]] = globals.matrixValues["empty"];
+                    }
+
+                    renderMatrix();
+                    subMatrixAdd = new List<int[]>();
+                } 
+            }
         }
     }
 }
