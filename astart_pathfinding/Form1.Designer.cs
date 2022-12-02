@@ -1,4 +1,4 @@
-﻿namespace astart_pathfinding
+﻿namespace astar_pathfinding
 {
     partial class Form1
     {

@@ -1,4 +1,4 @@
-namespace astart_pathfinding
+namespace astar_pathfinding
 {
     internal static class Program
     {

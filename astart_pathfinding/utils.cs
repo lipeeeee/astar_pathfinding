@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace astart_pathfinding
+namespace astar_pathfinding
 {
     public static class utils
     {

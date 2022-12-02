@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace astart_pathfinding
+namespace astar_pathfinding
 {
     public partial class Form1 : Form
     {
