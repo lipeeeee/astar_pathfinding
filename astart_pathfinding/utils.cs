@@ -57,5 +57,10 @@ namespace astart_pathfinding
 
             return cellXY;
         }
+
+        public static void switchIntegers(ref int a, ref int b)
+        {
+            (b, a) = (a, b);
+        }
     }
 }

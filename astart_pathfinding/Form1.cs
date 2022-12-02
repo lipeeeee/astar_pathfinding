@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace astart_pathfinding
@@ -23,7 +24,9 @@ namespace astart_pathfinding
             // Initialize Coordinates
             this.MaximumSize = new Size(this.Width, this.Height);
             matrix = new int[this.Width, this.Height];
-
+            globals.xSize = this.Width; 
+            globals.ySize = this.Height;
+            
             utils.fillBidemensionalMatrix(matrix, globals.matrixValues["empty"]);
             // utils.debugMatrixValues(matrix);
         }
@@ -214,6 +217,39 @@ namespace astart_pathfinding
                 // send click
                 btnClear_Click(new object(), new EventArgs());
             }
+        }
+
+        private void getMatrixEndpoints(ref int[] start_ij, ref int[] end_ij)
+        {
+            int c = 0; // stop flag
+            for (int i = 0; i < matrix.GetLength(0) && (c < 2); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1) && (c < 2); j++)
+                {
+                    if (matrix[i,j] == globals.matrixValues["end"])
+                    {
+                        end_ij[0] = i;
+                        end_ij[1] = j;
+                        c++;
+                    }
+                    else if (matrix[i, j] == globals.matrixValues["start"])
+                    {
+                        start_ij[0] = i;
+                        start_ij[1] = j;
+                        c++;                    
+                    }
+                }
+            }
+        }
+
+        private void btnDebug_Click(object sender, EventArgs e)
+        {
+            int[] start_ij = new int[2], end_ij = new int[2];
+            getMatrixEndpoints(ref start_ij, ref end_ij);
+
+            aStarPathfinding aStar = new aStarPathfinding(matrix, start_ij, end_ij);
+            MessageBox.Show(aStar.fastHeuritics(new int[] { 1, 1 }).ToString()); 
+            ///aStar.fastHeuritics(new int[] {0, 1});
         }
     }
 }
