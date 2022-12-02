@@ -30,13 +30,13 @@ namespace astart_pathfinding
             matrix = new int[this.Width, this.Height];
 
             utils.fillBidemensionalMatrix(matrix, globals.matrixValues["empty"]);
+            // utils.debugMatrixValues(matrix);
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            drawGrid();
             updateDimensions();
-            drawMatrixValues();
+            renderMatrix();
         }
 
         private void drawGrid()
@@ -100,9 +100,19 @@ namespace astart_pathfinding
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Form1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(matrix[0, 1] + "");
+            // Brute force to know which cell clicked on
+            int[] ij = utils.getCell(matrix, MousePosition.X, MousePosition.Y);
+            matrix[ij[0], ij[1]] = globals.matrixValues["wall"];
+
+            renderMatrix();
+        }
+
+        private void renderMatrix()
+        {
+            drawGrid();
+            drawMatrixValues();
         }
 
         private void updateDimensions()
