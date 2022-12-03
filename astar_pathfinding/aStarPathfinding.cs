@@ -40,7 +40,7 @@ namespace astar_pathfinding
         // My implementation of the heuritics calculation
         public int fastHeuritics(int[] ij)
         {
-            int h = 0;
+            int h;
             int diff0, diff1; //difference in dimensions
 
             // Calculate differences

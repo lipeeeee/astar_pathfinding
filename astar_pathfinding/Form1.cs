@@ -19,7 +19,7 @@ namespace astar_pathfinding
             subMatrixAdd = new List<int[]>();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void onLoad(object sender, EventArgs e)
         {
             // Initialize Coordinates
             this.MaximumSize = new Size(this.Width, this.Height);
@@ -31,7 +31,7 @@ namespace astar_pathfinding
             // utils.debugMatrixValues(matrix);
         }
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
+        private void onPaint(object sender, PaintEventArgs e)
         {
             updateDimensions();
             renderMatrix();
@@ -99,7 +99,18 @@ namespace astar_pathfinding
             }
         }
 
-        private void Form1_MouseClick(object sender, MouseEventArgs e)
+        private void renderMatrix()
+        {
+            drawMatrixValues();
+            drawGrid();
+        }
+
+        private void updateDimensions()
+        {
+            lblMatrixEndpoints.Text = this.Width + "," + this.Height;      
+        }
+
+        private void onMouseClick(object sender, MouseEventArgs e)
         {
             // Brute force to know which cell clicked on
             int[] ij = utils.getCell(matrix, e.X, e.Y);
@@ -111,29 +122,18 @@ namespace astar_pathfinding
             renderMatrix();
         }
 
-        private void renderMatrix()
-        {
-            drawMatrixValues();
-            drawGrid();
-        }
-
-        private void updateDimensions()
-        {
-            lblMatrixEndpoints.Text = this.Width + "," + this.Height;      
-        }
-  
-        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        private void onMouseDown(object sender, MouseEventArgs e)
         {
             mouseDown = true;
             leftClick = (e.Button == MouseButtons.Left);
         }
 
-        private void Form1_MouseUp(object sender, MouseEventArgs e)
+        private void onMouseUp(object sender, MouseEventArgs e)
         {
             mouseDown = false;
         }
 
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        private void onMouseMove(object sender, MouseEventArgs e)
         {
             if (mouseDown)
             {
@@ -158,13 +158,7 @@ namespace astar_pathfinding
             }
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            utils.fillBidemensionalMatrix(matrix, globals.matrixValues["empty"]);
-            renderMatrix();
-        }
-
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        private void onKeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.E) 
             {
@@ -240,6 +234,12 @@ namespace astar_pathfinding
                     }
                 }
             }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            utils.fillBidemensionalMatrix(matrix, globals.matrixValues["empty"]);
+            renderMatrix();
         }
 
         private void btnDebug_Click(object sender, EventArgs e)
