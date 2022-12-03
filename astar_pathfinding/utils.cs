@@ -45,9 +45,7 @@ namespace astar_pathfinding
                     // AABB collision
                     if (cur_x < x + globals.cellSize && cur_x + globals.cellSize > x &&
                         cur_y < y + globals.cellSize && cur_y + globals.cellSize > y) 
-                    {
-                        return new int[2] { i, j };
-                    }
+                        return new int[2] { i, j };           
 
                     cur_x += globals.cellSize;
                 }

@@ -74,21 +74,13 @@ namespace astar_pathfinding
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     if (matrix[i, j] == globals.matrixValues["empty"]) 
-                    {
                         formGraphics.FillRectangle(emptyBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
-                    }
                     else if (matrix[i, j] == globals.matrixValues["wall"])
-                    {
                         formGraphics.FillRectangle(blackBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
-                    }
                     else if (matrix[i, j] == globals.matrixValues["start"])
-                    {
                         formGraphics.FillRectangle(greenBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
-                    }
                     else if (matrix[i, j] == globals.matrixValues["end"])
-                    {
                         formGraphics.FillRectangle(redBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
-                    }
                     else
                         throw new Exception("matrix unbound value");
 
@@ -136,9 +128,7 @@ namespace astar_pathfinding
         private void onMouseMove(object sender, MouseEventArgs e)
         {
             if (mouseDown)
-            {
                 subMatrixAdd.Add(new int[] { e.X, e.Y });
-            }
             else
             {
                 if (subMatrixAdd.Count > 0)
@@ -213,7 +203,7 @@ namespace astar_pathfinding
             }
         }
 
-        private void getMatrixEndpoints(ref int[] start_ij, ref int[] end_ij)
+        private int getMatrixEndpoints(ref int[] start_ij, ref int[] end_ij)
         {
             int c = 0; // stop flag
             for (int i = 0; i < matrix.GetLength(0) && (c < 2); i++)
@@ -234,6 +224,8 @@ namespace astar_pathfinding
                     }
                 }
             }
+
+            return c;
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -245,11 +237,16 @@ namespace astar_pathfinding
         private void btnDebug_Click(object sender, EventArgs e)
         {
             int[] start_ij = new int[2], end_ij = new int[2];
-            getMatrixEndpoints(ref start_ij, ref end_ij);
+            int c = getMatrixEndpoints(ref start_ij, ref end_ij);
 
-            aStarPathfinding aStar = new aStarPathfinding(matrix, start_ij, end_ij);
-            MessageBox.Show(aStar.fastHeuritics(new int[] { 1, 1 }).ToString()); 
-            ///aStar.fastHeuritics(new int[] {0, 1});
+            // if c is 2 means it found all required endpoints
+            if (c == 2)
+            {
+                aStarPathfinding aStar = new(matrix, start_ij, end_ij);
+                MessageBox.Show(aStar.fastHeuritics(start_ij).ToString());
+            }
+            else
+                MessageBox.Show("Missing start and/or end node.", "Missing Endpoint", MessageBoxButtons.OK, MessageBoxIcon.Error);   
         }
     }
 }
