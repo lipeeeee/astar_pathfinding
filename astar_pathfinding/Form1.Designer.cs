@@ -31,8 +31,9 @@
             this.lblMatrixEndpoints = new System.Windows.Forms.Label();
             this.lblMousePos = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnClear = new System.Windows.Forms.Button();
             this.btnDebug = new System.Windows.Forms.Button();
+            this.btnClear = new System.Windows.Forms.Button();
+            this.lblNumNeighbours = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,19 +62,31 @@
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.lblNumNeighbours);
             this.panel1.Controls.Add(this.btnDebug);
             this.panel1.Controls.Add(this.btnClear);
             this.panel1.Controls.Add(this.lblMatrixEndpoints);
             this.panel1.Controls.Add(this.lblMousePos);
             this.panel1.Location = new System.Drawing.Point(12, 378);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(206, 60);
+            this.panel1.Size = new System.Drawing.Size(373, 60);
             this.panel1.TabIndex = 2;
+            // 
+            // btnDebug
+            // 
+            this.btnDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDebug.Location = new System.Drawing.Point(289, 6);
+            this.btnDebug.Name = "btnDebug";
+            this.btnDebug.Size = new System.Drawing.Size(75, 23);
+            this.btnDebug.TabIndex = 3;
+            this.btnDebug.Text = "Debug";
+            this.btnDebug.UseVisualStyleBackColor = true;
+            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
             // 
             // btnClear
             // 
             this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClear.Location = new System.Drawing.Point(122, 34);
+            this.btnClear.Location = new System.Drawing.Point(289, 34);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 2;
@@ -81,16 +94,16 @@
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
-            // btnDebug
+            // lblNumNeighbours
             // 
-            this.btnDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDebug.Location = new System.Drawing.Point(122, 6);
-            this.btnDebug.Name = "btnDebug";
-            this.btnDebug.Size = new System.Drawing.Size(75, 23);
-            this.btnDebug.TabIndex = 3;
-            this.btnDebug.Text = "Debug";
-            this.btnDebug.UseVisualStyleBackColor = true;
-            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
+            this.lblNumNeighbours.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblNumNeighbours.AutoSize = true;
+            this.lblNumNeighbours.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNumNeighbours.Location = new System.Drawing.Point(79, 34);
+            this.lblNumNeighbours.Name = "lblNumNeighbours";
+            this.lblNumNeighbours.Size = new System.Drawing.Size(61, 17);
+            this.lblNumNeighbours.TabIndex = 4;
+            this.lblNumNeighbours.Text = "NumNeib";
             // 
             // Form1
             // 
@@ -122,5 +135,6 @@
         private Panel panel1;
         private Button btnClear;
         private Button btnDebug;
+        private Label lblNumNeighbours;
     }
 }

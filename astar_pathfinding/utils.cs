@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace astar_pathfinding
+﻿namespace astar_pathfinding
 {
     public static class utils
     {
@@ -27,7 +21,7 @@ namespace astar_pathfinding
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    matrix[i, j] = rnd.Next(0,4);
+                    matrix[i, j] = rnd.Next(0, 4);
                 }
             }
         }
@@ -43,14 +37,14 @@ namespace astar_pathfinding
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     // AABB collision
-                    if (cur_x < x + globals.cellSize && cur_x + globals.cellSize > x &&
-                        cur_y < y + globals.cellSize && cur_y + globals.cellSize > y) 
-                        return new int[2] { i, j };           
+                    if (cur_x < x + globals.CELL_SIZE && cur_x + globals.CELL_SIZE > x &&
+                        cur_y < y + globals.CELL_SIZE && cur_y + globals.CELL_SIZE > y)
+                        return new int[2] { i, j };
 
-                    cur_x += globals.cellSize;
+                    cur_x += globals.CELL_SIZE;
                 }
                 cur_x = 0;
-                cur_y += globals.cellSize;
+                cur_y += globals.CELL_SIZE;
             }
 
             return cellXY;

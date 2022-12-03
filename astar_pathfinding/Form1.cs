@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace astar_pathfinding
 {
     public partial class Form1 : Form
@@ -15,7 +12,7 @@ namespace astar_pathfinding
             InitializeComponent();
 
             // Non-Nullable warning
-            matrix = new int[0,0];
+            matrix = new int[0, 0];
             subMatrixAdd = new List<int[]>();
         }
 
@@ -24,10 +21,10 @@ namespace astar_pathfinding
             // Initialize Coordinates
             this.MaximumSize = new Size(this.Width, this.Height);
             matrix = new int[this.Width, this.Height];
-            globals.xSize = this.Width; 
-            globals.ySize = this.Height;
-            
-            utils.fillBidemensionalMatrix(matrix, globals.matrixValues["empty"]);
+            globals.X_SIZE = this.Width;
+            globals.Y_SIZE = this.Height;
+
+            utils.fillBidemensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
             // utils.debugMatrixValues(matrix);
         }
 
@@ -47,10 +44,10 @@ namespace astar_pathfinding
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 // Vertical
-                formGraphics.DrawLine(p, i * globals.cellSize, 0, i * globals.cellSize, matrix.GetLength(0) * globals.cellSize);
+                formGraphics.DrawLine(p, i * globals.CELL_SIZE, 0, i * globals.CELL_SIZE, matrix.GetLength(0) * globals.CELL_SIZE);
 
                 // Horizontal
-                formGraphics.DrawLine(p, 0, i * globals.cellSize, matrix.GetLength(1) * globals.cellSize, i * globals.cellSize);
+                formGraphics.DrawLine(p, 0, i * globals.CELL_SIZE, matrix.GetLength(1) * globals.CELL_SIZE, i * globals.CELL_SIZE);
             }
 
             myBrush.Dispose();
@@ -73,21 +70,21 @@ namespace astar_pathfinding
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    if (matrix[i, j] == globals.matrixValues["empty"]) 
-                        formGraphics.FillRectangle(emptyBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
-                    else if (matrix[i, j] == globals.matrixValues["wall"])
-                        formGraphics.FillRectangle(blackBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
-                    else if (matrix[i, j] == globals.matrixValues["start"])
-                        formGraphics.FillRectangle(greenBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
-                    else if (matrix[i, j] == globals.matrixValues["end"])
-                        formGraphics.FillRectangle(redBrush, new Rectangle(cur_x, cur_y, globals.cellSize, globals.cellSize));
+                    if (matrix[i, j] == globals.MATRIX_VALUES["empty"])
+                        formGraphics.FillRectangle(emptyBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                    else if (matrix[i, j] == globals.MATRIX_VALUES["wall"])
+                        formGraphics.FillRectangle(blackBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                    else if (matrix[i, j] == globals.MATRIX_VALUES["start"])
+                        formGraphics.FillRectangle(greenBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                    else if (matrix[i, j] == globals.MATRIX_VALUES["end"])
+                        formGraphics.FillRectangle(redBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
                     else
                         throw new Exception("matrix unbound value");
 
-                    cur_x += globals.cellSize;
+                    cur_x += globals.CELL_SIZE;
                 }
                 cur_x = 0;
-                cur_y += globals.cellSize;
+                cur_y += globals.CELL_SIZE;
             }
         }
 
@@ -99,7 +96,7 @@ namespace astar_pathfinding
 
         private void updateDimensions()
         {
-            lblMatrixEndpoints.Text = this.Width + "," + this.Height;      
+            lblMatrixEndpoints.Text = this.Width + "," + this.Height;
         }
 
         private void onMouseClick(object sender, MouseEventArgs e)
@@ -107,9 +104,9 @@ namespace astar_pathfinding
             // Brute force to know which cell clicked on
             int[] ij = utils.getCell(matrix, e.X, e.Y);
             if (e.Button == MouseButtons.Left)
-                matrix[ij[0], ij[1]] = globals.matrixValues["wall"];
+                matrix[ij[0], ij[1]] = globals.MATRIX_VALUES["wall"];
             else
-                matrix[ij[0], ij[1]] = globals.matrixValues["empty"];
+                matrix[ij[0], ij[1]] = globals.MATRIX_VALUES["empty"];
 
             renderMatrix();
         }
@@ -137,20 +134,20 @@ namespace astar_pathfinding
                     {
                         int[] ij = utils.getCell(matrix, cell[0], cell[1]);
                         if (leftClick)
-                            matrix[ij[0], ij[1]] = globals.matrixValues["wall"];
+                            matrix[ij[0], ij[1]] = globals.MATRIX_VALUES["wall"];
                         else
-                            matrix[ij[0], ij[1]] = globals.matrixValues["empty"];
+                            matrix[ij[0], ij[1]] = globals.MATRIX_VALUES["empty"];
                     }
 
                     renderMatrix();
                     subMatrixAdd = new List<int[]>();
-                } 
+                }
             }
         }
 
         private void onKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.E) 
+            if (e.KeyCode == Keys.E)
             {
                 // check if end exists already
                 bool foundEnd = false;
@@ -158,9 +155,9 @@ namespace astar_pathfinding
                 {
                     for (int j = 0; j < matrix.GetLength(1) && foundEnd == false; j++)
                     {
-                        if (matrix[i, j] == globals.matrixValues["end"])
+                        if (matrix[i, j] == globals.MATRIX_VALUES["end"])
                         {
-                            matrix[i, j] = globals.matrixValues["empty"];
+                            matrix[i, j] = globals.MATRIX_VALUES["empty"];
                             foundEnd = true;
                         }
                     }
@@ -169,8 +166,8 @@ namespace astar_pathfinding
                 // get cell
                 Point relativePoint = this.PointToClient(Cursor.Position);
                 int[] cell = utils.getCell(matrix, relativePoint.X, relativePoint.Y);
-                
-                matrix[cell[0], cell[1]] = globals.matrixValues["end"];
+
+                matrix[cell[0], cell[1]] = globals.MATRIX_VALUES["end"];
                 renderMatrix();
             }
             else if (e.KeyCode == Keys.S)
@@ -181,9 +178,9 @@ namespace astar_pathfinding
                 {
                     for (int j = 0; j < matrix.GetLength(1) && foundStart == false; j++)
                     {
-                        if (matrix[i, j] == globals.matrixValues["start"])
+                        if (matrix[i, j] == globals.MATRIX_VALUES["start"])
                         {
-                            matrix[i, j] = globals.matrixValues["empty"];
+                            matrix[i, j] = globals.MATRIX_VALUES["empty"];
                             foundStart = true;
                         }
                     }
@@ -193,7 +190,7 @@ namespace astar_pathfinding
                 Point relativePoint = this.PointToClient(Cursor.Position);
                 int[] cell = utils.getCell(matrix, relativePoint.X, relativePoint.Y);
 
-                matrix[cell[0], cell[1]] = globals.matrixValues["start"];
+                matrix[cell[0], cell[1]] = globals.MATRIX_VALUES["start"];
                 renderMatrix();
             }
             else if (e.KeyCode == Keys.C)
@@ -210,17 +207,17 @@ namespace astar_pathfinding
             {
                 for (int j = 0; j < matrix.GetLength(1) && (c < 2); j++)
                 {
-                    if (matrix[i,j] == globals.matrixValues["end"])
+                    if (matrix[i, j] == globals.MATRIX_VALUES["end"])
                     {
                         end_ij[0] = i;
                         end_ij[1] = j;
                         c++;
                     }
-                    else if (matrix[i, j] == globals.matrixValues["start"])
+                    else if (matrix[i, j] == globals.MATRIX_VALUES["start"])
                     {
                         start_ij[0] = i;
                         start_ij[1] = j;
-                        c++;                    
+                        c++;
                     }
                 }
             }
@@ -230,23 +227,27 @@ namespace astar_pathfinding
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            utils.fillBidemensionalMatrix(matrix, globals.matrixValues["empty"]);
+            utils.fillBidemensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
             renderMatrix();
         }
 
         private void btnDebug_Click(object sender, EventArgs e)
         {
+
             int[] start_ij = new int[2], end_ij = new int[2];
             int c = getMatrixEndpoints(ref start_ij, ref end_ij);
+            aStarPathfinding aStar = new(matrix, start_ij, end_ij);
+            lblNumNeighbours.Text = aStar.getNeighbours(start_ij).Count.ToString();
 
             // if c is 2 means it found all required endpoints
-            if (c == 2)
+            /*if (c == 2)
             {
                 aStarPathfinding aStar = new(matrix, start_ij, end_ij);
-                MessageBox.Show(aStar.fastHeuritics(start_ij).ToString());
+                MessageBox.Show(aStar.getHCost(start_ij).ToString());
             }
             else
                 MessageBox.Show("Missing start and/or end node.", "Missing Endpoint", MessageBoxButtons.OK, MessageBoxIcon.Error);   
+            */
         }
     }
 }
