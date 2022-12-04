@@ -42,16 +42,18 @@ namespace astar_pathfinding
         {
             SolidBrush myBrush = new(Color.Black);
             Graphics formGraphics = this.CreateGraphics();
+            int len0 = matrix.GetLength(0);
+            int len1 = matrix.GetLength(1);
             Pen p = new(myBrush);
 
             // Draw matrix grid 
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 // Vertical
-                formGraphics.DrawLine(p, i * globals.CELL_SIZE, 0, i * globals.CELL_SIZE, matrix.GetLength(0) * globals.CELL_SIZE);
+                formGraphics.DrawLine(p, i * globals.CELL_SIZE, 0, i * globals.CELL_SIZE, len0 * globals.CELL_SIZE);
 
                 // Horizontal
-                formGraphics.DrawLine(p, 0, i * globals.CELL_SIZE, matrix.GetLength(1) * globals.CELL_SIZE, i * globals.CELL_SIZE);
+                formGraphics.DrawLine(p, 0, i * globals.CELL_SIZE, len1 * globals.CELL_SIZE, i * globals.CELL_SIZE);
             }
 
             myBrush.Dispose();
@@ -96,6 +98,14 @@ namespace astar_pathfinding
                 cur_x = 0;
                 cur_y += globals.CELL_SIZE;
             }
+
+            blackBrush.Dispose();
+            redBrush.Dispose();
+            emptyBrush.Dispose();
+            cyanBrush.Dispose();
+            greenBrush.Dispose();
+            orangeBrush.Dispose();
+            formGraphics.Dispose();
         }
 
         public void getPath()
@@ -110,16 +120,16 @@ namespace astar_pathfinding
 
             aStarPathfinding aStar = new(matrix, start_ij, end_ij);
             bool found = aStar.getPath();
+            foundScreen = true;
 
             if (found)
             {
-                foundScreen = true;
-
                 matrix[end_ij[0], end_ij[1]] = globals.MATRIX_VALUES["end"];
-                renderMatrix();
             }
             else
                 MessageBox.Show("Did not find path to end node", "No Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            renderMatrix();
         }
 
         private void renderMatrix()
