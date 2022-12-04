@@ -24,18 +24,6 @@
         public int[] start_ij = new int[2];
         public int[] end_ij = new int[2];
 
-        public Node calculateCost(int[] ij)
-        {
-            Node node = new()
-            {
-                ij = ij,
-                g = getGCost(ij),
-                h = getHCost(ij)
-            };
-            node.f = node.g + node.h;
-            return node;
-        }
-
         public bool getPath()
         {
             bool endFound = false;
@@ -52,7 +40,7 @@
 
                 // get lowest f cost
                 lowestFCostNode = searchedNodes[0];
-                for (int j = 1; j < searchedNodes.Count; j++) 
+                for (int j = 1; j < searchedNodes.Count; j++)
                 {
                     if (searchedNodes[j].f <= lowestFCostNode.f)
                         if (searchedNodes[j].f == lowestFCostNode.f)
@@ -65,14 +53,26 @@
                 cur_ij = lowestFCostNode.ij;
                 matrix[cur_ij[0], cur_ij[1]] = globals.MATRIX_VALUES["path"];
 
-                if ((cur_ij[0] == end_ij[0]) && (cur_ij[1] == end_ij[1]))                
+                if ((cur_ij[0] == end_ij[0]) && (cur_ij[1] == end_ij[1]))
                     endFound = true;
             }
 
             return endFound;
         }
 
-        public List<Node> getNeighbours(int[] ij)
+        private Node calculateCost(int[] ij)
+        {
+            Node node = new()
+            {
+                ij = ij,
+                g = getGCost(ij),
+                h = getHCost(ij)
+            };
+            node.f = node.g + node.h;
+            return node;
+        }
+
+        private List<Node> getNeighbours(int[] ij)
         {
             List<Node> neighbours = new();
             Node neighbourTemp;
@@ -82,38 +82,27 @@
             offset = ij[1] - 1;
             for (int i = 0; i < 3; i++)
             {
-                neighbourTemp.ij = new int[] { ij[0] - 1, offset };
-                neighbourTemp.g = getGCost(neighbourTemp.ij);
-                neighbourTemp.h = getHCost(neighbourTemp.ij);
-                neighbourTemp.f = neighbourTemp.g + neighbourTemp.h;
+                neighbourTemp = calculateCost(new int[] { ij[0] - 1, offset });
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
             }
-
 
             // top row
             offset = ij[0] - 1;
             for (int i = 0; i < 3; i++)
             {
-                neighbourTemp.ij = new int[] { offset, ij[1] - 1 };
-                neighbourTemp.g = getGCost(neighbourTemp.ij);
-                neighbourTemp.h = getHCost(neighbourTemp.ij);
-                neighbourTemp.f = neighbourTemp.g + neighbourTemp.h;
+                neighbourTemp = calculateCost(new int[] { offset, ij[1] - 1 });
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
             }
 
-
             // right column
             offset = ij[1] - 1;
             for (int i = 0; i < 3; i++)
             {
-                neighbourTemp.ij = new int[] { ij[0] + 1, offset };
-                neighbourTemp.g = getGCost(neighbourTemp.ij);
-                neighbourTemp.h = getHCost(neighbourTemp.ij);
-                neighbourTemp.f = neighbourTemp.g + neighbourTemp.h;
+                neighbourTemp = calculateCost(new int[] { ij[0] + 1, offset });
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
@@ -123,10 +112,7 @@
             offset = ij[0] - 1;
             for (int i = 0; i < 3; i++)
             {
-                neighbourTemp.ij = new int[] { offset, ij[1] + 1 };
-                neighbourTemp.g = getGCost(neighbourTemp.ij);
-                neighbourTemp.h = getHCost(neighbourTemp.ij);
-                neighbourTemp.f = neighbourTemp.g + neighbourTemp.h;
+                neighbourTemp = calculateCost(new int[] { offset, ij[1] + 1 });
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
@@ -140,7 +126,7 @@
         }
 
         // My implementation of the heuritics calculation
-        public int getHCost(int[] ij)
+        private int getHCost(int[] ij)
         {
             int h;
             int diff0, diff1; //difference in dimensions
@@ -166,7 +152,7 @@
             return h;
         }
 
-        public int getGCost(int[] ij)
+        private int getGCost(int[] ij)
         {
             int gCost;
             int diff0, diff1; //difference in dimensions
@@ -192,7 +178,7 @@
             return gCost;
         }
 
-        public static List<Node> removeDuplicateNodes(List<Node> nodes)
+        private static List<Node> removeDuplicateNodes(List<Node> nodes)
         {
             List<Node> distinctNodes = new();
             List<int[]> distinctIJ = new();
@@ -217,7 +203,7 @@
             return distinctNodes;
         }
 
-        public static List<Node> normalizeNodes(List<Node> nodes)
+        private static List<Node> normalizeNodes(List<Node> nodes)
         {
             List<Node> normalizedNodes = new();
 
