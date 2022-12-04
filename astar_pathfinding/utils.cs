@@ -2,7 +2,7 @@
 {
     public static class utils
     {
-        public static void fillBidemensionalMatrix(int[,] matrix, int value)
+        public static void fillBidimensionalMatrix(int[,] matrix, int value)
         {
             // Backwards for loop for XY coord migration
             for (int i = 0; i < matrix.GetLength(0); i++)
@@ -13,6 +13,8 @@
                 }
             }
         }
+
+        public static void removeBidimensionalMatrixValue(int[,] matrix, int value) { }
 
         public static void debugMatrixValues(int[,] matrix)
         {
@@ -55,5 +57,10 @@
         {
             (b, a) = (a, b);
         }
+
+
+        public static void exportMatrix() { }
+
+        public static void importMatrix() { }
     }
 }

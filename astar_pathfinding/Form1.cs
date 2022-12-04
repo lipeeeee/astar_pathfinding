@@ -115,6 +115,8 @@ namespace astar_pathfinding
                 matrix[end_ij[0], end_ij[1]] = globals.MATRIX_VALUES["end"];
                 renderMatrix();
             }
+            else
+                MessageBox.Show("Did not find path to end node", "No Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void renderMatrix()

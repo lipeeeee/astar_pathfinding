@@ -1,4 +1,7 @@
-﻿namespace astar_pathfinding
+﻿using System.Drawing.Drawing2D;
+using static astar_pathfinding.aStarPathfinding;
+
+namespace astar_pathfinding
 {
     public class aStarPathfinding
     {
@@ -27,7 +30,10 @@
         public bool getPath()
         {
             bool endFound = false;
-            List<Node> searchedNodes = new();
+            List<Node> unExploredNodes = new();
+            List<Node> exploredNodes = new(){
+                calculateCost(start_ij)
+            };
             int[] cur_ij = start_ij;
             Node lowestFCostNode;
             uint maxIterations = (uint)globals.X_SIZE * (uint)globals.Y_SIZE;
@@ -35,22 +41,26 @@
             for (uint i = 0; i < maxIterations && endFound == false; i++)
             {
                 // Search around
-                searchedNodes.AddRange(getNeighbours(cur_ij));
-                searchedNodes = removeDuplicateNodes(searchedNodes);
+                unExploredNodes.AddRange(getNeighbours(cur_ij));
+                unExploredNodes = removeDuplicateNodes(unExploredNodes);
+                unExploredNodes = subtractLists(unExploredNodes, exploredNodes);
+                if (unExploredNodes.Count == 0)
+                    return false;
 
                 // get lowest f cost
-                lowestFCostNode = searchedNodes[0];
-                for (int j = 1; j < searchedNodes.Count; j++)
+                lowestFCostNode = unExploredNodes[0];
+                for (int j = 1; j < unExploredNodes.Count; j++)
                 {
-                    if (searchedNodes[j].f <= lowestFCostNode.f)
-                        if (searchedNodes[j].f == lowestFCostNode.f)
-                            lowestFCostNode = (searchedNodes[j].h < lowestFCostNode.h) ? searchedNodes[j] : lowestFCostNode;
+                    if (unExploredNodes[j].f <= lowestFCostNode.f)
+                        if (unExploredNodes[j].f == lowestFCostNode.f)
+                            lowestFCostNode = (unExploredNodes[j].h > lowestFCostNode.h) ? unExploredNodes[j] : lowestFCostNode;
                         else
-                            lowestFCostNode = searchedNodes[j];
+                            lowestFCostNode = unExploredNodes[j];
                 }
 
                 // pursue it
                 cur_ij = lowestFCostNode.ij;
+                exploredNodes.Add(lowestFCostNode);
                 matrix[cur_ij[0], cur_ij[1]] = globals.MATRIX_VALUES["path"];
 
                 if ((cur_ij[0] == end_ij[0]) && (cur_ij[1] == end_ij[1]))
@@ -121,6 +131,7 @@
             // normalize and remove duplicates
             neighbours = removeDuplicateNodes(neighbours);
             neighbours = normalizeNodes(neighbours);
+            neighbours = removeWalls(neighbours);
 
             return neighbours;
         }
@@ -215,6 +226,44 @@
             }
 
             return normalizedNodes;
+        }
+
+        private List<Node> removeWalls(List<Node> nodes)
+        {
+            List<Node> removedWalls = new();
+            
+            foreach (Node node in nodes)
+            {
+                if (matrix[node.ij[0], node.ij[1]] != globals.MATRIX_VALUES["wall"])
+                    removedWalls.Add(node);
+            }
+
+            return removedWalls;
+        }
+
+        // list1 - list2
+        // O(mn)
+        private List<Node> subtractLists(List<Node> list1, List<Node> list2) 
+        { 
+            List<Node> newList = new();
+            bool coordsExist;
+            for (int i = 0; i < list1.Count; i++)
+            {
+                coordsExist = false;
+                for (int j = 0; j < list2.Count && coordsExist == false; j++) 
+                {
+                    if ((list1[i].ij[0] == list2[j].ij[0]) &&
+                        (list1[i].ij[1] == list2[j].ij[1])) 
+                    {
+                        coordsExist = true;
+                    }
+                }
+
+                if (coordsExist == false)
+                    newList.Add(list1[i]);
+            }
+
+            return newList;
         }
     }
 }
