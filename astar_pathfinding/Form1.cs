@@ -28,7 +28,7 @@ namespace astar_pathfinding
             globals.Y_SIZE = this.Height / 30;
             matrix = new int[this.Width, this.Height];
 
-            utils.fillBidemensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
+            utils.fillBidimensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
             // utils.debugMatrixValues(matrix);
         }
 
@@ -135,7 +135,7 @@ namespace astar_pathfinding
             if (foundScreen)
             {
                 // reset matrix
-                utils.fillBidemensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
+                utils.fillBidimensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
                 foundScreen = false;
             }
 
@@ -190,7 +190,7 @@ namespace astar_pathfinding
                 if (foundScreen)
                 {
                     // reset matrix
-                    utils.fillBidemensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
+                    utils.fillBidimensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
                     foundScreen = false;
                 }
                 else
@@ -222,7 +222,7 @@ namespace astar_pathfinding
                 if (foundScreen)
                 {
                     // reset matrix
-                    utils.fillBidemensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
+                    utils.fillBidimensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
                     foundScreen = false;
                 }
                 else
@@ -288,7 +288,7 @@ namespace astar_pathfinding
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            utils.fillBidemensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
+            utils.fillBidimensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
             renderMatrix();
         }
 
