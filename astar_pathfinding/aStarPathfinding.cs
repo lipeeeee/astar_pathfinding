@@ -63,6 +63,7 @@
 
                 // pursue it
                 cur_ij = lowestFCostNode.ij;
+                matrix[cur_ij[0], cur_ij[1]] = globals.MATRIX_VALUES["path"];
 
                 if ((cur_ij[0] == end_ij[0]) && (cur_ij[1] == end_ij[1]))                
                     endFound = true;

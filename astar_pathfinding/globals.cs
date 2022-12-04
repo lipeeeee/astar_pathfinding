@@ -12,7 +12,9 @@
             {"empty", 0},
             {"start", 1},
             {"end", 2},
-            {"wall", 3}
+            {"wall", 3},
+            {"path", 4 },
+            {"explored", 5 }
         };
     }
 }
