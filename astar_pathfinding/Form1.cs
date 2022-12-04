@@ -61,11 +61,6 @@ namespace astar_pathfinding
         // Color mapping
         private void drawMatrixValues()
         {
-            SolidBrush blackBrush = new(Color.Black);
-            SolidBrush redBrush = new(Color.Red);
-            SolidBrush greenBrush = new(Color.Green);
-            SolidBrush emptyBrush = new(Color.WhiteSmoke);
-            SolidBrush cyanBrush = new(Color.DarkCyan);
             Graphics formGraphics = this.CreateGraphics();
 
             int cur_x = 0, cur_y = 0;
@@ -76,15 +71,17 @@ namespace astar_pathfinding
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     if (matrix[i, j] == globals.MATRIX_VALUES["empty"])
-                        formGraphics.FillRectangle(emptyBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                        formGraphics.FillRectangle(new SolidBrush(Color.WhiteSmoke), new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
                     else if (matrix[i, j] == globals.MATRIX_VALUES["wall"])
-                        formGraphics.FillRectangle(blackBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                        formGraphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
                     else if (matrix[i, j] == globals.MATRIX_VALUES["start"])
-                        formGraphics.FillRectangle(greenBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                        formGraphics.FillRectangle(new SolidBrush(Color.Green), new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
                     else if (matrix[i, j] == globals.MATRIX_VALUES["end"])
-                        formGraphics.FillRectangle(redBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                        formGraphics.FillRectangle(new SolidBrush(Color.Red), new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
                     else if (matrix[i, j] == globals.MATRIX_VALUES["path"])
-                        formGraphics.FillRectangle(cyanBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                        formGraphics.FillRectangle(new SolidBrush(Color.DarkCyan), new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                    else if (matrix[i, j] == globals.MATRIX_VALUES["explored"])
+                        formGraphics.FillRectangle(new SolidBrush(Color.DarkOrange), new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
                     else
                         throw new Exception("matrix unbound value");
 

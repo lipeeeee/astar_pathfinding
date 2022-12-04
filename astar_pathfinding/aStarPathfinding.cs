@@ -61,7 +61,7 @@ namespace astar_pathfinding
                 // pursue it
                 cur_ij = lowestFCostNode.ij;
                 exploredNodes.Add(lowestFCostNode);
-                matrix[cur_ij[0], cur_ij[1]] = globals.MATRIX_VALUES["path"];
+                matrix[cur_ij[0], cur_ij[1]] = globals.MATRIX_VALUES["explored"];
 
                 if ((cur_ij[0] == end_ij[0]) && (cur_ij[1] == end_ij[1]))
                     endFound = true;
@@ -243,7 +243,7 @@ namespace astar_pathfinding
 
         // list1 - list2
         // O(mn)
-        private List<Node> subtractLists(List<Node> list1, List<Node> list2) 
+        private static List<Node> subtractLists(List<Node> list1, List<Node> list2) 
         { 
             List<Node> newList = new();
             bool coordsExist;
