@@ -4,6 +4,7 @@
     {
         public static void fillBidemensionalMatrix(int[,] matrix, int value)
         {
+            // Backwards for loop for XY coord migration
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)

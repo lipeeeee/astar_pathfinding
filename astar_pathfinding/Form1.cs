@@ -20,9 +20,10 @@ namespace astar_pathfinding
         {
             // Initialize Coordinates
             this.MaximumSize = new Size(this.Width, this.Height);
+            
+            globals.X_SIZE = this.Width / 30;
+            globals.Y_SIZE = this.Height / 30;
             matrix = new int[this.Width, this.Height];
-            globals.X_SIZE = this.Width;
-            globals.Y_SIZE = this.Height;
 
             utils.fillBidemensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
             // utils.debugMatrixValues(matrix);
@@ -238,7 +239,7 @@ namespace astar_pathfinding
             int c = getMatrixEndpoints(ref start_ij, ref end_ij);
             aStarPathfinding aStar = new(matrix, start_ij, end_ij);
             lblNumNeighbours.Text = aStar.getNeighbours(start_ij).Count.ToString();
-
+            lblStartxy.Text = start_ij[0] + ", " + start_ij[1];
             // if c is 2 means it found all required endpoints
             /*if (c == 2)
             {

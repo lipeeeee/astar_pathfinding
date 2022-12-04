@@ -31,9 +31,10 @@
             this.lblMatrixEndpoints = new System.Windows.Forms.Label();
             this.lblMousePos = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblStartxy = new System.Windows.Forms.Label();
+            this.lblNumNeighbours = new System.Windows.Forms.Label();
             this.btnDebug = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
-            this.lblNumNeighbours = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,6 +63,7 @@
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.lblStartxy);
             this.panel1.Controls.Add(this.lblNumNeighbours);
             this.panel1.Controls.Add(this.btnDebug);
             this.panel1.Controls.Add(this.btnClear);
@@ -71,6 +73,28 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(373, 60);
             this.panel1.TabIndex = 2;
+            // 
+            // lblStartxy
+            // 
+            this.lblStartxy.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblStartxy.AutoSize = true;
+            this.lblStartxy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblStartxy.Location = new System.Drawing.Point(79, 10);
+            this.lblStartxy.Name = "lblStartxy";
+            this.lblStartxy.Size = new System.Drawing.Size(62, 17);
+            this.lblStartxy.TabIndex = 5;
+            this.lblStartxy.Text = "STARTXUY";
+            // 
+            // lblNumNeighbours
+            // 
+            this.lblNumNeighbours.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblNumNeighbours.AutoSize = true;
+            this.lblNumNeighbours.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNumNeighbours.Location = new System.Drawing.Point(79, 34);
+            this.lblNumNeighbours.Name = "lblNumNeighbours";
+            this.lblNumNeighbours.Size = new System.Drawing.Size(61, 17);
+            this.lblNumNeighbours.TabIndex = 4;
+            this.lblNumNeighbours.Text = "NumNeib";
             // 
             // btnDebug
             // 
@@ -93,17 +117,6 @@
             this.btnClear.Text = "Clear(C)";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
-            // lblNumNeighbours
-            // 
-            this.lblNumNeighbours.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblNumNeighbours.AutoSize = true;
-            this.lblNumNeighbours.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblNumNeighbours.Location = new System.Drawing.Point(79, 34);
-            this.lblNumNeighbours.Name = "lblNumNeighbours";
-            this.lblNumNeighbours.Size = new System.Drawing.Size(61, 17);
-            this.lblNumNeighbours.TabIndex = 4;
-            this.lblNumNeighbours.Text = "NumNeib";
             // 
             // Form1
             // 
@@ -136,5 +149,6 @@
         private Button btnClear;
         private Button btnDebug;
         private Label lblNumNeighbours;
+        private Label lblStartxy;
     }
 }
