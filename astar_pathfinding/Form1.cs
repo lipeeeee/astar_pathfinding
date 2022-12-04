@@ -240,6 +240,7 @@ namespace astar_pathfinding
             aStarPathfinding aStar = new(matrix, start_ij, end_ij);
             lblNumNeighbours.Text = aStar.getNeighbours(start_ij).Count.ToString();
             lblStartxy.Text = start_ij[0] + ", " + start_ij[1];
+            MessageBox.Show(aStar.getPath().ToString());
             // if c is 2 means it found all required endpoints
             /*if (c == 2)
             {

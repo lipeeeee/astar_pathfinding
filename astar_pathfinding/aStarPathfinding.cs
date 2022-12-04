@@ -36,17 +36,39 @@
             return node;
         }
 
-        public void getPath()
+        public bool getPath()
         {
             bool endFound = false;
             List<Node> searchedNodes = new();
+            int[] cur_ij = start_ij;
+            Node lowestFCostNode;
             uint maxIterations = (uint)globals.X_SIZE * (uint)globals.Y_SIZE;
 
             for (uint i = 0; i < maxIterations && endFound == false; i++)
             {
                 // Search around
+                searchedNodes.AddRange(getNeighbours(cur_ij));
+                searchedNodes = removeDuplicateNodes(searchedNodes);
 
+                // get lowest f cost
+                lowestFCostNode = searchedNodes[0];
+                for (int j = 1; j < searchedNodes.Count; j++) 
+                {
+                    if (searchedNodes[j].f <= lowestFCostNode.f)
+                        if (searchedNodes[j].f == lowestFCostNode.f)
+                            lowestFCostNode = (searchedNodes[j].h < lowestFCostNode.h) ? searchedNodes[j] : lowestFCostNode;
+                        else
+                            lowestFCostNode = searchedNodes[j];
+                }
+
+                // pursue it
+                cur_ij = lowestFCostNode.ij;
+
+                if ((cur_ij[0] == end_ij[0]) && (cur_ij[1] == end_ij[1]))                
+                    endFound = true;
             }
+
+            return endFound;
         }
 
         public List<Node> getNeighbours(int[] ij)
@@ -201,7 +223,7 @@
             foreach (Node node in nodes)
             {
                 if ((node.ij[0] >= 0 && node.ij[1] >= 0) &&
-                    (node.ij[0] <= globals.X_SIZE && node.ij[1] <= globals.Y_SIZE))
+                    (node.ij[0] <= globals.Y_SIZE && node.ij[1] <= globals.X_SIZE))
                     normalizedNodes.Add(node);
             }
 
