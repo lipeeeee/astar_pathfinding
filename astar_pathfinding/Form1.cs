@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-
 namespace astar_pathfinding
 {
     public partial class Form1 : Form
@@ -13,7 +11,7 @@ namespace astar_pathfinding
         public Form1()
         {
             InitializeComponent();
-            
+
             // Non-Nullable warning
             matrix = new int[0, 0];
             subMatrixAdd = new List<int[]>();
@@ -22,11 +20,11 @@ namespace astar_pathfinding
         private void onLoad(object sender, EventArgs e)
         {
             // Initialize Coordinates
-            this.MaximumSize = new Size(this.Width, this.Height);
-            
-            globals.X_SIZE = this.Width / 30;
-            globals.Y_SIZE = this.Height / 30;
-            matrix = new int[this.Width, this.Height];
+            MaximumSize = new Size(Width, Height);
+
+            globals.X_SIZE = Width / 30;
+            globals.Y_SIZE = Height / 30;
+            matrix = new int[Width, Height];
 
             utils.fillBidimensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
             // utils.debugMatrixValues(matrix);
@@ -41,7 +39,7 @@ namespace astar_pathfinding
         private void drawGrid()
         {
             SolidBrush myBrush = new(Color.Black);
-            Graphics formGraphics = this.CreateGraphics();
+            Graphics formGraphics = CreateGraphics();
             int len0 = matrix.GetLength(0);
             int len1 = matrix.GetLength(1);
             Pen p = new(myBrush);
@@ -69,7 +67,7 @@ namespace astar_pathfinding
             SolidBrush emptyBrush = new(Color.WhiteSmoke);
             SolidBrush cyanBrush = new(Color.DarkCyan);
             SolidBrush orangeBrush = new(Color.DarkOrange);
-            Graphics formGraphics = this.CreateGraphics();
+            Graphics formGraphics = CreateGraphics();
 
             int cur_x = 0, cur_y = 0;
 
@@ -79,19 +77,33 @@ namespace astar_pathfinding
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     if (matrix[i, j] == globals.MATRIX_VALUES["empty"])
+                    {
                         formGraphics.FillRectangle(emptyBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                    }
                     else if (matrix[i, j] == globals.MATRIX_VALUES["wall"])
+                    {
                         formGraphics.FillRectangle(blackBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                    }
                     else if (matrix[i, j] == globals.MATRIX_VALUES["start"])
+                    {
                         formGraphics.FillRectangle(greenBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                    }
                     else if (matrix[i, j] == globals.MATRIX_VALUES["end"])
+                    {
                         formGraphics.FillRectangle(redBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                    }
                     else if (matrix[i, j] == globals.MATRIX_VALUES["path"])
+                    {
                         formGraphics.FillRectangle(cyanBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                    }
                     else if (matrix[i, j] == globals.MATRIX_VALUES["explored"])
+                    {
                         formGraphics.FillRectangle(orangeBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                    }
                     else
+                    {
                         throw new Exception("matrix unbound value");
+                    }
 
                     cur_x += globals.CELL_SIZE;
                 }
@@ -114,7 +126,7 @@ namespace astar_pathfinding
             int c = getMatrixEndpoints(ref start_ij, ref end_ij);
             if (c != 2)
             {
-                MessageBox.Show("Missing start and/or end node", "Missing endpoint", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _ = MessageBox.Show("Missing start and/or end node", "Missing endpoint", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -123,9 +135,13 @@ namespace astar_pathfinding
             foundScreen = true;
 
             if (found != false)
+            {
                 matrix[end_ij[0], end_ij[1]] = globals.MATRIX_VALUES["end"];
+            }
             else
-                MessageBox.Show("Did not find path to end node", "No Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            {
+                _ = MessageBox.Show("Did not find path to end node", "No Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
             renderMatrix();
         }
@@ -138,7 +154,7 @@ namespace astar_pathfinding
 
         private void updateDimensions()
         {
-            lblMatrixEndpoints.Text = this.Width + "," + this.Height;
+            lblMatrixEndpoints.Text = Width + "," + Height;
         }
 
         private void onMouseClick(object sender, MouseEventArgs e)
@@ -152,10 +168,7 @@ namespace astar_pathfinding
 
             // Brute force to know which cell clicked on
             int[] ij = utils.getCell(matrix, e.X, e.Y);
-            if (e.Button == MouseButtons.Left)
-                matrix[ij[0], ij[1]] = globals.MATRIX_VALUES["wall"];
-            else
-                matrix[ij[0], ij[1]] = globals.MATRIX_VALUES["empty"];
+            matrix[ij[0], ij[1]] = e.Button == MouseButtons.Left ? globals.MATRIX_VALUES["wall"] : globals.MATRIX_VALUES["empty"];
 
             renderMatrix();
         }
@@ -163,7 +176,7 @@ namespace astar_pathfinding
         private void onMouseDown(object sender, MouseEventArgs e)
         {
             mouseDown = true;
-            leftClick = (e.Button == MouseButtons.Left);
+            leftClick = e.Button == MouseButtons.Left;
         }
 
         private void onMouseUp(object sender, MouseEventArgs e)
@@ -174,7 +187,9 @@ namespace astar_pathfinding
         private void onMouseMove(object sender, MouseEventArgs e)
         {
             if (mouseDown)
+            {
                 subMatrixAdd.Add(new int[] { e.X, e.Y });
+            }
             else
             {
                 if (subMatrixAdd.Count > 0)
@@ -182,10 +197,7 @@ namespace astar_pathfinding
                     foreach (int[] cell in subMatrixAdd)
                     {
                         int[] ij = utils.getCell(matrix, cell[0], cell[1]);
-                        if (leftClick)
-                            matrix[ij[0], ij[1]] = globals.MATRIX_VALUES["wall"];
-                        else
-                            matrix[ij[0], ij[1]] = globals.MATRIX_VALUES["empty"];
+                        matrix[ij[0], ij[1]] = leftClick ? globals.MATRIX_VALUES["wall"] : globals.MATRIX_VALUES["empty"];
                     }
 
                     renderMatrix();
@@ -224,7 +236,7 @@ namespace astar_pathfinding
                 }
 
                 // get cell
-                Point relativePoint = this.PointToClient(Cursor.Position);
+                Point relativePoint = PointToClient(Cursor.Position);
                 int[] cell = utils.getCell(matrix, relativePoint.X, relativePoint.Y);
 
                 matrix[cell[0], cell[1]] = globals.MATRIX_VALUES["end"];
@@ -256,7 +268,7 @@ namespace astar_pathfinding
                 }
 
                 // get cell
-                Point relativePoint = this.PointToClient(Cursor.Position);
+                Point relativePoint = PointToClient(Cursor.Position);
                 int[] cell = utils.getCell(matrix, relativePoint.X, relativePoint.Y);
 
                 matrix[cell[0], cell[1]] = globals.MATRIX_VALUES["start"];
@@ -323,7 +335,7 @@ namespace astar_pathfinding
             renderMatrix();
 
             // better ui handling
-            btnSearch.Focus();
+            _ = btnSearch.Focus();
         }
 
         private void btnSearchClick(object sender, EventArgs e)
@@ -335,7 +347,7 @@ namespace astar_pathfinding
         {
             utils.randomMaze(matrix);
             renderMatrix();
-            btnSearch.Focus();
+            _ = btnSearch.Focus();
         }
     }
 }

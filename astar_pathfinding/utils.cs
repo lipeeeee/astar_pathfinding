@@ -14,14 +14,16 @@
             }
         }
 
-        public static void removeBidimensionalMatrixValue(int[,] matrix, int oldValue, int newValue) 
+        public static void removeBidimensionalMatrixValue(int[,] matrix, int oldValue, int newValue)
         {
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     if (matrix[i, j] == oldValue)
+                    {
                         matrix[i, j] = newValue;
+                    }
                 }
             }
         }
@@ -34,10 +36,7 @@
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    if (rnd.Next(0, 2) == 0)
-                        matrix[i, j] = 0;
-                    else
-                        matrix[i, j] = 3;
+                    matrix[i, j] = rnd.Next(0, 2) == 0 ? 0 : 3;
                 }
             }
         }
@@ -68,7 +67,9 @@
                     // AABB collision
                     if (cur_x < x + globals.CELL_SIZE && cur_x + globals.CELL_SIZE > x &&
                         cur_y < y + globals.CELL_SIZE && cur_y + globals.CELL_SIZE > y)
+                    {
                         return new int[2] { i, j };
+                    }
 
                     cur_x += globals.CELL_SIZE;
                 }
