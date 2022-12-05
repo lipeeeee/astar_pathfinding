@@ -44,6 +44,9 @@ csharp_style_prefer_not_pattern = true:suggestion
 csharp_style_prefer_extended_property_pattern = true:suggestion
 csharp_style_var_for_built_in_types = false:silent
 
+# CS8500: This takes the address of, gets the size of, or declares a pointer to a managed type
+dotnet_diagnostic.CS8500.severity = silent
+
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
 tab_width = 4

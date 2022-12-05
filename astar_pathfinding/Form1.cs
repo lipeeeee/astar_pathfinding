@@ -13,7 +13,7 @@ namespace astar_pathfinding
         public Form1()
         {
             InitializeComponent();
-
+            
             // Non-Nullable warning
             matrix = new int[0, 0];
             subMatrixAdd = new List<int[]>();
@@ -122,10 +122,8 @@ namespace astar_pathfinding
             bool found = aStar.getPath();
             foundScreen = true;
 
-            if (found)
-            {
+            if (found != false)
                 matrix[end_ij[0], end_ij[1]] = globals.MATRIX_VALUES["end"];
-            }
             else
                 MessageBox.Show("Did not find path to end node", "No Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -193,6 +191,8 @@ namespace astar_pathfinding
                     renderMatrix();
                     subMatrixAdd = new List<int[]>();
                 }
+                int[] cell2 = utils.getCell(matrix, e.X, e.Y);
+                lblNumNeighbours.Text = cell2[0] + ", " + cell2[1];
             }
         }
 
@@ -267,10 +267,28 @@ namespace astar_pathfinding
                 // send click
                 btnClear_Click(new object(), new EventArgs());
             }
-            else if (e.KeyCode == Keys.D)
+            else if (e.KeyCode == Keys.Enter)
             {
-                // send clickd
-                btnDebug_Click(new object(), new EventArgs());
+                if (foundScreen)
+                {
+                    // reset matrix
+                    utils.fillBidimensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
+                    foundScreen = false;
+                }
+
+                // send click
+                btnSearchClick(new object(), new EventArgs());
+            }
+            else if (e.KeyCode == Keys.M)
+            {
+                if (foundScreen)
+                {
+                    // reset matrix
+                    utils.fillBidimensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
+                    foundScreen = false;
+                }
+
+                btnMaze_Click(new object(), new EventArgs());
             }
         }
 
@@ -303,20 +321,21 @@ namespace astar_pathfinding
         {
             utils.fillBidimensionalMatrix(matrix, globals.MATRIX_VALUES["empty"]);
             renderMatrix();
+
+            // better ui handling
+            btnSearch.Focus();
         }
 
-        private void btnDebug_Click(object sender, EventArgs e)
+        private void btnSearchClick(object sender, EventArgs e)
         {
             getPath();
-            // if c is 2 means it found all required endpoints
-            /*if (c == 2)
-            {
-                aStarPathfinding aStar = new(matrix, start_ij, end_ij);
-                MessageBox.Show(aStar.getHCost(start_ij).ToString());
-            }
-            else
-                MessageBox.Show("Missing start and/or end node.", "Missing Endpoint", MessageBoxButtons.OK, MessageBoxIcon.Error);   
-            */
+        }
+
+        private void btnMaze_Click(object sender, EventArgs e)
+        {
+            utils.randomMaze(matrix);
+            renderMatrix();
+            btnSearch.Focus();
         }
     }
 }

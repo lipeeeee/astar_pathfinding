@@ -14,7 +14,33 @@
             }
         }
 
-        public static void removeBidimensionalMatrixValue(int[,] matrix, int value) { }
+        public static void removeBidimensionalMatrixValue(int[,] matrix, int oldValue, int newValue) 
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    if (matrix[i, j] == oldValue)
+                        matrix[i, j] = newValue;
+                }
+            }
+        }
+
+        public static void randomMaze(int[,] matrix)
+        {
+            Random rnd = new();
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    if (rnd.Next(0, 2) == 0)
+                        matrix[i, j] = 0;
+                    else
+                        matrix[i, j] = 3;
+                }
+            }
+        }
 
         public static void debugMatrixValues(int[,] matrix)
         {

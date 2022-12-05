@@ -31,9 +31,10 @@
             this.lblMatrixEndpoints = new System.Windows.Forms.Label();
             this.lblMousePos = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnMaze = new System.Windows.Forms.Button();
             this.lblStartxy = new System.Windows.Forms.Label();
             this.lblNumNeighbours = new System.Windows.Forms.Label();
-            this.btnDebug = new System.Windows.Forms.Button();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -63,16 +64,29 @@
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.btnMaze);
             this.panel1.Controls.Add(this.lblStartxy);
             this.panel1.Controls.Add(this.lblNumNeighbours);
-            this.panel1.Controls.Add(this.btnDebug);
+            this.panel1.Controls.Add(this.btnSearch);
             this.panel1.Controls.Add(this.btnClear);
             this.panel1.Controls.Add(this.lblMatrixEndpoints);
             this.panel1.Controls.Add(this.lblMousePos);
             this.panel1.Location = new System.Drawing.Point(12, 378);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(373, 60);
+            this.panel1.Size = new System.Drawing.Size(417, 60);
             this.panel1.TabIndex = 2;
+            // 
+            // btnMaze
+            // 
+            this.btnMaze.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMaze.Location = new System.Drawing.Point(224, 6);
+            this.btnMaze.Name = "btnMaze";
+            this.btnMaze.Size = new System.Drawing.Size(96, 51);
+            this.btnMaze.TabIndex = 6;
+            this.btnMaze.TabStop = false;
+            this.btnMaze.Text = "Random Maze(M)";
+            this.btnMaze.UseVisualStyleBackColor = true;
+            this.btnMaze.Click += new System.EventHandler(this.btnMaze_Click);
             // 
             // lblStartxy
             // 
@@ -96,30 +110,33 @@
             this.lblNumNeighbours.TabIndex = 4;
             this.lblNumNeighbours.Text = "NumNeib";
             // 
-            // btnDebug
+            // btnSearch
             // 
-            this.btnDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDebug.Location = new System.Drawing.Point(289, 6);
-            this.btnDebug.Name = "btnDebug";
-            this.btnDebug.Size = new System.Drawing.Size(75, 23);
-            this.btnDebug.TabIndex = 3;
-            this.btnDebug.Text = "Debug";
-            this.btnDebug.UseVisualStyleBackColor = true;
-            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
+            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearch.Location = new System.Drawing.Point(326, 6);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(87, 23);
+            this.btnSearch.TabIndex = 0;
+            this.btnSearch.TabStop = false;
+            this.btnSearch.Text = "Search(Enter)";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearchClick);
             // 
             // btnClear
             // 
             this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClear.Location = new System.Drawing.Point(289, 34);
+            this.btnClear.Location = new System.Drawing.Point(326, 34);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.Size = new System.Drawing.Size(87, 23);
             this.btnClear.TabIndex = 2;
+            this.btnClear.TabStop = false;
             this.btnClear.Text = "Clear(C)";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // Form1
             // 
+            this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
@@ -147,8 +164,9 @@
         private Label lblMousePos;
         private Panel panel1;
         private Button btnClear;
-        private Button btnDebug;
+        private Button btnSearch;
         private Label lblNumNeighbours;
         private Label lblStartxy;
+        private Button btnMaze;
     }
 }

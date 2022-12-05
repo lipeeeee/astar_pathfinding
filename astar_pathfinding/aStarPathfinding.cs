@@ -1,5 +1,5 @@
-﻿using System.Drawing.Drawing2D;
-using static astar_pathfinding.aStarPathfinding;
+﻿using System.Drawing.Design;
+using System.Runtime.ConstrainedExecution;
 
 namespace astar_pathfinding
 {
@@ -12,36 +12,39 @@ namespace astar_pathfinding
             this.end_ij = end_ij;
         }
 
-        public struct Node
+        unsafe class Node
         {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
             public int[] ij; // matrix coords
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
             public int g; // g = distance from starting node (g cost)
             public int h; // h = how far away node is from end node (heuristic)
             public int f; // f = g + h
+            unsafe public Node? parent; // parent node
         }
 
         public int[,] matrix;
         public List<int[]> pathToEnd = new();
-        public Node[,] matrixNodes = new Node[globals.X_SIZE, globals.Y_SIZE];
 
         public int[] start_ij = new int[2];
         public int[] end_ij = new int[2];
 
-        public bool getPath()
+        // Returns path
+        unsafe public bool getPath()
         {
             bool endFound = false;
+            uint maxIterations = (uint)globals.X_SIZE * (uint)globals.Y_SIZE;
             List<Node> unExploredNodes = new();
             List<Node> exploredNodes = new(){
                 calculateCost(start_ij)
             };
-            int[] cur_ij = start_ij;
-            Node lowestFCostNode;
-            uint maxIterations = (uint)globals.X_SIZE * (uint)globals.Y_SIZE;
+            Node lowestFCostNode, current = exploredNodes[0];
+            current.parent = null;
 
             for (uint i = 0; i < maxIterations && endFound == false; i++)
             {
                 // Search around
-                unExploredNodes.AddRange(getNeighbours(cur_ij));
+                unExploredNodes.AddRange(getNeighbours(current));
                 unExploredNodes = removeDuplicateNodes(unExploredNodes);
                 unExploredNodes = subtractLists(unExploredNodes, exploredNodes);
                 if (unExploredNodes.Count == 0)
@@ -53,21 +56,44 @@ namespace astar_pathfinding
                 {
                     if (unExploredNodes[j].f <= lowestFCostNode.f)
                         if (unExploredNodes[j].f == lowestFCostNode.f)
-                            lowestFCostNode = (unExploredNodes[j].h > lowestFCostNode.h) ? unExploredNodes[j] : lowestFCostNode;
+                            lowestFCostNode = (unExploredNodes[j].h < lowestFCostNode.h) ? unExploredNodes[j] : lowestFCostNode;
                         else
                             lowestFCostNode = unExploredNodes[j];
                 }
 
                 // pursue it
-                cur_ij = lowestFCostNode.ij;
+                //lowestFCostNode.parent = current;
+                current = lowestFCostNode; // FIX INFINITE LOOP
+                
                 exploredNodes.Add(lowestFCostNode);
-                matrix[cur_ij[0], cur_ij[1]] = globals.MATRIX_VALUES["explored"];
+                matrix[current.ij[0], current.ij[1]] = globals.MATRIX_VALUES["explored"];
 
-                if ((cur_ij[0] == end_ij[0]) && (cur_ij[1] == end_ij[1]))
+                if ((current.ij[0] == end_ij[0]) && (current.ij[1] == end_ij[1]))
                     endFound = true;
             }
 
+            // get path
+            List<int[]> path = reversePath(current);
+
+            // remove explored and unexplored nodes
+            if (endFound == false)
+                removeExploredUnexploredNodes(matrix);
+
             return endFound;
+        }
+
+        unsafe private List<int[]> reversePath(Node current)
+        {
+            List<int[]> reversedPath = new();
+
+            while (current.parent != null)
+            {
+                reversedPath.Add(current.ij);
+                matrix[current.ij[0], current.ij[1]] = globals.MATRIX_VALUES["path"];
+                current = current.parent;
+            }
+
+            return reversedPath;
         }
 
         private Node calculateCost(int[] ij)
@@ -82,10 +108,11 @@ namespace astar_pathfinding
             return node;
         }
 
-        private List<Node> getNeighbours(int[] ij)
+        private List<Node> getNeighbours(Node node)
         {
             List<Node> neighbours = new();
             Node neighbourTemp;
+            int[] ij = node.ij;
             int offset;
 
             // left column
@@ -93,6 +120,7 @@ namespace astar_pathfinding
             for (int i = 0; i < 3; i++)
             {
                 neighbourTemp = calculateCost(new int[] { ij[0] - 1, offset });
+                neighbourTemp.parent = node;
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
@@ -103,6 +131,7 @@ namespace astar_pathfinding
             for (int i = 0; i < 3; i++)
             {
                 neighbourTemp = calculateCost(new int[] { offset, ij[1] - 1 });
+                neighbourTemp.parent = node;
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
@@ -113,6 +142,7 @@ namespace astar_pathfinding
             for (int i = 0; i < 3; i++)
             {
                 neighbourTemp = calculateCost(new int[] { ij[0] + 1, offset });
+                neighbourTemp.parent = node;
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
@@ -123,6 +153,7 @@ namespace astar_pathfinding
             for (int i = 0; i < 3; i++)
             {
                 neighbourTemp = calculateCost(new int[] { offset, ij[1] + 1 });
+                neighbourTemp.parent = node;
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
@@ -231,7 +262,7 @@ namespace astar_pathfinding
         private List<Node> removeWalls(List<Node> nodes)
         {
             List<Node> removedWalls = new();
-            
+
             foreach (Node node in nodes)
             {
                 if (matrix[node.ij[0], node.ij[1]] != globals.MATRIX_VALUES["wall"])
@@ -243,17 +274,17 @@ namespace astar_pathfinding
 
         // list1 - list2
         // O(mn)
-        private static List<Node> subtractLists(List<Node> list1, List<Node> list2) 
-        { 
+        private static List<Node> subtractLists(List<Node> list1, List<Node> list2)
+        {
             List<Node> newList = new();
             bool coordsExist;
             for (int i = 0; i < list1.Count; i++)
             {
                 coordsExist = false;
-                for (int j = 0; j < list2.Count && coordsExist == false; j++) 
+                for (int j = 0; j < list2.Count && coordsExist == false; j++)
                 {
                     if ((list1[i].ij[0] == list2[j].ij[0]) &&
-                        (list1[i].ij[1] == list2[j].ij[1])) 
+                        (list1[i].ij[1] == list2[j].ij[1]))
                     {
                         coordsExist = true;
                     }
@@ -264,6 +295,12 @@ namespace astar_pathfinding
             }
 
             return newList;
+        }
+
+        private static void removeExploredUnexploredNodes(int[,] matrix)
+        {
+            utils.removeBidimensionalMatrixValue(matrix, globals.MATRIX_VALUES["explored"], globals.MATRIX_VALUES["empty"]);
+            utils.removeBidimensionalMatrixValue(matrix, globals.MATRIX_VALUES["path"], globals.MATRIX_VALUES["empty"]);
         }
     }
 }
