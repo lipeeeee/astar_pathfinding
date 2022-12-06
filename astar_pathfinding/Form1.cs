@@ -1,3 +1,7 @@
+using System.Collections.Immutable;
+using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace astar_pathfinding
 {
     public partial class Form1 : Form
@@ -32,7 +36,6 @@ namespace astar_pathfinding
 
         private void onPaint(object sender, PaintEventArgs e)
         {
-            updateDimensions();
             renderMatrix();
         }
 
@@ -152,11 +155,6 @@ namespace astar_pathfinding
             drawGrid();
         }
 
-        private void updateDimensions()
-        {
-            lblMatrixEndpoints.Text = Width + "," + Height;
-        }
-
         private void onMouseClick(object sender, MouseEventArgs e)
         {
             if (foundScreen)
@@ -204,7 +202,7 @@ namespace astar_pathfinding
                     subMatrixAdd = new List<int[]>();
                 }
                 int[] cell2 = utils.getCell(matrix, e.X, e.Y);
-                lblNumNeighbours.Text = cell2[0] + ", " + cell2[1];
+                lblCell.Text = cell2[0] + ", " + cell2[1];
             }
         }
 
@@ -348,6 +346,39 @@ namespace astar_pathfinding
             utils.randomMaze(matrix);
             renderMatrix();
             _ = btnSearch.Focus();
+        }
+
+        private void importMatrixToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFile = new()
+            {
+                Filter = "Text Files|*.txt",
+                Title = "Save Matrix to file"
+            };
+            openFile.ShowDialog();
+            
+            // If the file name is not an empty string open it for saving.   
+            if (openFile.FileName != "")
+            {
+                // Saves the Image via a FileStream created by the OpenFile method.
+            }
+        }
+
+        private void exportMatrixToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new()
+            {
+                Filter = "Text Files|*.txt",
+                Title = "Save Matrix to file"
+            };
+            saveFile.ShowDialog();
+
+            // If the file name is not an empty string open it for saving.   
+            if (saveFile.FileName != "")
+            {
+                // Saves the matrix via a FileStream created by the OpenFile method.
+                File.WriteAllLines(saveFile.FileName, utils.exportMatrix(matrix));
+            }
         }
     }
 }
