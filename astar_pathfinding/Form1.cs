@@ -360,7 +360,10 @@ namespace astar_pathfinding
             // If the file name is not an empty string open it for saving.   
             if (openFile.FileName != "")
             {
-                // Saves the Image via a FileStream created by the OpenFile method.
+                // Reads matrix via a FileSteam
+                string[] lines = File.ReadAllLines(openFile.FileName);
+                utils.importMatrix(lines, ref matrix);
+                renderMatrix();
             }
         }
 
@@ -376,7 +379,7 @@ namespace astar_pathfinding
             // If the file name is not an empty string open it for saving.   
             if (saveFile.FileName != "")
             {
-                // Saves the matrix via a FileStream created by the OpenFile method.
+                // Saves the matrix via a FileStream
                 File.WriteAllLines(saveFile.FileName, utils.exportMatrix(matrix));
             }
         }

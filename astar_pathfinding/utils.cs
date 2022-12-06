@@ -1,5 +1,6 @@
 ﻿using System.Drawing.Drawing2D;
 using System.Globalization;
+using System.Reflection;
 
 namespace astar_pathfinding
 {
@@ -112,20 +113,26 @@ namespace astar_pathfinding
             return result.ToArray();
         }
 
-        public static string[] importMatrix(string[] lines) 
+        public static void importMatrix(string[] lines, ref int[,] matrix) 
         {
             int iLen = Int32.Parse(lines[0]);
             int jLen = Int32.Parse(lines[1]);
+            lines = lines.Skip(2).ToArray();
 
-            List<string> result = new()
+            matrix = get2DMatrix(lines, iLen, jLen);
+        }
+
+        private static int[,] get2DMatrix(string[] input, int iLen, int jLen)
+        {
+            int[,] output = new int[iLen, jLen];
+            for (int i = 0; i < iLen; i++)
             {
-                lines[0].ToString(),
-                lines[1].ToString()
-            };
-
-            for (int i = 2; )
-
-            return result.ToArray();
+                for (int j = 0; j < jLen; j++)
+                {
+                    output[i, j] = Int32.Parse(input[i * jLen + j]);
+                }
+            }
+            return output;
         }
     }
 }
