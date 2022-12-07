@@ -31,7 +31,7 @@
         {
             bool endFound = false;
             uint maxIterations = (uint)globals.X_SIZE * (uint)globals.Y_SIZE;
-            List<Node> unExploredNodes = new();
+            List<Node> unExploredNodes = new(), tempUnExplored;
             List<Node> exploredNodes = new(){
                 calculateCost(start_ij)
             };
@@ -40,13 +40,23 @@
 
             for (uint i = 0; i < maxIterations && endFound == false; i++)
             {
-                // Search around
+                // Search 
                 unExploredNodes.AddRange(getNeighbours(current));
                 unExploredNodes = removeDuplicateNodes(unExploredNodes);
                 unExploredNodes = subtractLists(unExploredNodes, exploredNodes);
                 if (unExploredNodes.Count == 0)
                 {
                     return false;
+                }
+                else if (1 == 1) // deeperSearch
+                {
+                    tempUnExplored = unExploredNodes;
+                    foreach (Node node in tempUnExplored)
+                    {
+                        unExploredNodes.AddRange(getNeighbours(node));
+                        unExploredNodes = removeDuplicateNodes(unExploredNodes);
+                        unExploredNodes = subtractLists(unExploredNodes, exploredNodes);
+                    }
                 }
 
                 // get lowest f cost
@@ -83,6 +93,73 @@
             }
 
             return endFound;
+        }
+
+        //https://mat.uab.cat/~alseda/MasterOpt/AStar-Algorithm.pdf
+        public bool betterGetPath()
+        {
+            Node lowestCost;
+            Node? current;
+            List<Node> open = new(); // nodes that have been visited but not expanded
+            List<Node> close = new(); // nodes that have been visited and expanded
+            List<Node> neighbours;
+            
+            // Add start node to open list
+            open.Add(new()
+            {
+                f = 0,
+                h = 0,
+                g = 0,
+                ij = start_ij,
+                parent = null
+            });
+            
+            while (open.Count > 0)
+            {
+                // Get lowest f cost in open list
+                lowestCost = getLowestFCost(open);
+
+                open.Remove(lowestCost);
+                close.Add(lowestCost);
+
+                // Found end
+                if (lowestCost.ij[0] == end_ij[0] && lowestCost.ij[1] == end_ij[1])
+                {
+                    current = lowestCost;  
+                    while (current != null)
+                    {
+                        matrix[current.ij[0], current.ij[1]] = globals.MATRIX_VALUES["path"];
+                        current = current.parent;
+                    }
+
+                    return true;
+                }
+
+                // Get neighbours
+                neighbours = getNeighbours(lowestCost);
+                neighbours = removeWalls(neighbours);
+                foreach (Node node in neighbours)
+                {
+                    if (listContainsIJ(open, node.ij)) //close.Contains(node)
+                    {
+                        if (node.f < lowestCost.f)
+                        {
+                            // recalculate in some way
+                            current = calculateCost(node.ij);
+                            current.parent = lowestCost;
+                            open.Add(current);
+                        }
+
+                        continue;
+                    }
+                    else if (listContainsIJ(close, node.ij)) //open.Contains(node)
+                        continue;
+                    else
+                        open.Add(node);
+                }
+            }
+
+            return false;
         }
 
         private unsafe List<int[]> reversePath(Node current)
@@ -215,6 +292,23 @@
             return gCost;
         }
 
+        private Node getLowestFCost(List<Node> nodes)
+        {
+            Node lowestFCost = nodes[0];
+
+            for (int i = 1; i < nodes.Count; i++)
+            {
+                if (nodes[i].f <= lowestFCost.f)
+                {
+                    lowestFCost = nodes[i].f == lowestFCost.f
+                        ? (nodes[i].h < lowestFCost.h) ? nodes[i] : lowestFCost
+                        : nodes[i];
+                }
+            }
+
+            return lowestFCost;
+        }
+
         private static List<Node> removeDuplicateNodes(List<Node> nodes)
         {
             List<Node> distinctNodes = new();
@@ -271,6 +365,16 @@
             }
 
             return removedWalls;
+        }
+
+        private bool listContainsIJ(List<Node> nodes, int[] ij)
+        {
+            foreach (Node node in nodes)
+            {
+                if (node.ij[0] == ij[0] && node.ij[1] == ij[1])
+                    return true;
+            }
+            return false;
         }
 
         // list1 - list2

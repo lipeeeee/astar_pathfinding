@@ -134,7 +134,7 @@ namespace astar_pathfinding
             }
 
             aStarPathfinding aStar = new(matrix, start_ij, end_ij);
-            bool found = aStar.getPath();
+            bool found = aStar.betterGetPath();
             foundScreen = true;
 
             if (found != false)
