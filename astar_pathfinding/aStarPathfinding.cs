@@ -1,4 +1,11 @@
-﻿namespace astar_pathfinding
+﻿using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Drawing;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Policy;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+
+namespace astar_pathfinding
 {
     public class aStarPathfinding
     {
@@ -9,20 +16,42 @@
             this.end_ij = end_ij;
         }
 
-        private unsafe class Node
+        private class Node
         {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
             public int[] ij; // matrix coords
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
             public int g; // g = distance from starting node (g cost)
             public int h; // h = how far away node is from end node (heuristic)
             public int f; // f = g + h
             public unsafe Node? parent; // parent node
+
+            public Node()
+            {
+
+            }
+
+            public Node(int[] ij)
+            {
+                this.ij = ij;
+            }
+
+            // override object.Equals
+            public override bool Equals(object? obj) => this.Equals(obj as Node);
+
+            public bool Equals(Node? obj)
+            {
+                if (obj == null || this.GetType() != obj.GetType())
+                    return false;
+
+                if (obj.ij[0] == this.ij[0] && obj.ij[1] == this.ij[1])
+                    return true;
+
+                return false;
+            }
+
+            public override int GetHashCode() => base.GetHashCode();
         }
 
         public int[,] matrix;
-        public List<int[]> pathToEnd = new();
-
         public int[] start_ij = new int[2];
         public int[] end_ij = new int[2];
 
@@ -33,7 +62,7 @@
             uint maxIterations = (uint)globals.X_SIZE * (uint)globals.Y_SIZE;
             List<Node> unExploredNodes = new(), tempUnExplored;
             List<Node> exploredNodes = new(){
-                calculateCost(start_ij)
+                calculateCost(start_ij, null)
             };
             Node lowestFCostNode, current = exploredNodes[0];
             current.parent = null;
@@ -96,6 +125,7 @@
         }
 
         //https://mat.uab.cat/~alseda/MasterOpt/AStar-Algorithm.pdf
+        // https://en.wikipedia.org/wiki/A*_search_algorithm
         public bool betterGetPath()
         {
             Node lowestCost;
@@ -103,7 +133,8 @@
             List<Node> open = new(); // nodes that have been visited but not expanded
             List<Node> close = new(); // nodes that have been visited and expanded
             List<Node> neighbours;
-            
+            int tentativeScore;
+
             // Add start node to open list
             open.Add(new()
             {
@@ -137,25 +168,36 @@
 
                 // Get neighbours
                 neighbours = getNeighbours(lowestCost);
-                neighbours = removeWalls(neighbours);
-                foreach (Node node in neighbours)
+                for (int i = 0; i < neighbours.Count; i++)
                 {
-                    if (listContainsIJ(open, node.ij)) //close.Contains(node)
+                    /*tentativeScore = lowestCost.g + d(neighbours[i].ij, lowestCost.ij);
+                    if (tentativeScore < neighbours[i].g)
                     {
-                        if (node.f < lowestCost.f)
-                        {
-                            // recalculate in some way
-                            current = calculateCost(node.ij);
-                            current.parent = lowestCost;
-                            open.Add(current);
-                        }
+                        neighbours[i].parent = lowestCost;
+                        neighbours[i].g = tentativeScore;
+                        neighbours[i].f = tentativeScore + neighbours[i].g;
 
-                        continue;
+                        if (open.Contains(neighbours[i]) == false)
+                            open.Add(neighbours[i]);
+                    }*/
+                    tentativeScore = lowestCost.g + d(neighbours[i].ij, lowestCost.ij);
+                    neighbours[i].g = tentativeScore;
+
+                    if (open.Contains(neighbours[i]))
+                    {
+                        if (neighbours[i].g <= tentativeScore)
+                            continue;
                     }
-                    else if (listContainsIJ(close, node.ij)) //open.Contains(node)
-                        continue;
+                    else if (close.Contains(neighbours[i]))
+                    {
+                        if (neighbours[i].g <= tentativeScore)
+                            continue;
+                        close.Remove(neighbours[i]);
+                        open.Add(neighbours[i]);
+                    }
                     else
-                        open.Add(node);
+                        open.Add(neighbours[i]);
+
                 }
             }
 
@@ -176,14 +218,16 @@
             return reversedPath;
         }
 
-        private Node calculateCost(int[] ij)
+        private Node calculateCost(int[] ij, Node? parent)
         {
             Node node = new()
             {
                 ij = ij,
+                h = getHCost(ij),
                 g = getGCost(ij),
-                h = getHCost(ij)
+                parent = parent
             };
+
             node.f = node.g + node.h;
             return node;
         }
@@ -199,8 +243,7 @@
             offset = ij[1] - 1;
             for (int i = 0; i < 3; i++)
             {
-                neighbourTemp = calculateCost(new int[] { ij[0] - 1, offset });
-                neighbourTemp.parent = node;
+                neighbourTemp = calculateCost(new int[] { ij[0] - 1, offset }, node);
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
@@ -210,8 +253,7 @@
             offset = ij[0] - 1;
             for (int i = 0; i < 3; i++)
             {
-                neighbourTemp = calculateCost(new int[] { offset, ij[1] - 1 });
-                neighbourTemp.parent = node;
+                neighbourTemp = calculateCost(new int[] { offset, ij[1] - 1 }, node);
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
@@ -221,8 +263,7 @@
             offset = ij[1] - 1;
             for (int i = 0; i < 3; i++)
             {
-                neighbourTemp = calculateCost(new int[] { ij[0] + 1, offset });
-                neighbourTemp.parent = node;
+                neighbourTemp = calculateCost(new int[] { ij[0] + 1, offset }, node);
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
@@ -232,8 +273,7 @@
             offset = ij[0] - 1;
             for (int i = 0; i < 3; i++)
             {
-                neighbourTemp = calculateCost(new int[] { offset, ij[1] + 1 });
-                neighbourTemp.parent = node;
+                neighbourTemp = calculateCost(new int[] { offset, ij[1] + 1 }, node);
                 neighbours.Add(neighbourTemp);
 
                 offset += 1;
@@ -246,6 +286,32 @@
 
             return neighbours;
         }
+
+        private int newGetH(int[] ij)
+        {
+            int HxDiff = Math.Abs(end_ij[0] - ij[0]);
+            int HyDiff = Math.Abs(end_ij[1] - ij[1]);
+            return HxDiff + HyDiff;
+        }
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        private int newGetG(Node node)
+        {
+            if (node == null)
+                return -1;
+
+            int GxMoveCost = node.ij[0] - node.parent.ij[0];
+            int GyMoveCost = node.ij[1] - node.parent.ij[1];
+            int gCost = node.parent.g;
+
+            if (GxMoveCost != 0 && GyMoveCost != 0)
+                gCost += 14;
+            else
+                gCost += 10;
+
+            return gCost;
+        }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         // My implementation of the heuritics calculation
         private int getHCost(int[] ij)
@@ -292,6 +358,26 @@
             return gCost;
         }
 
+        private int d(int[] start, int[] finish)
+        {
+            int dCost;
+            int diff0, diff1; //difference in dimensions
+
+            // Calculate differences
+            diff0 = start[0] > finish[0] ? start[0] - finish[0] : finish[0] - start[0];
+            diff1 = start[1] > finish[1] ? start[1] - finish[1] : finish[1] - start[1];
+
+            // Check for exception
+            if (diff0 < diff1)
+            {
+                (diff0, diff1) = (diff1, diff0);
+            }
+
+            diff0 -= diff1;
+            dCost = (diff0 * 10) + (diff1 * 14);
+
+            return dCost;
+        }
         private Node getLowestFCost(List<Node> nodes)
         {
             Node lowestFCost = nodes[0];
@@ -307,6 +393,20 @@
             }
 
             return lowestFCost;
+        }
+
+        private int searchOpen(List<Node> open, int[] ij)
+        {
+            int index = -1;
+            for (int i = 0; i < open.Count; i++)
+            {
+                if (open[i].ij[0] == ij[0] && open[i].ij[1] == ij[1])
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
         }
 
         private static List<Node> removeDuplicateNodes(List<Node> nodes)
@@ -365,16 +465,6 @@
             }
 
             return removedWalls;
-        }
-
-        private bool listContainsIJ(List<Node> nodes, int[] ij)
-        {
-            foreach (Node node in nodes)
-            {
-                if (node.ij[0] == ij[0] && node.ij[1] == ij[1])
-                    return true;
-            }
-            return false;
         }
 
         // list1 - list2
