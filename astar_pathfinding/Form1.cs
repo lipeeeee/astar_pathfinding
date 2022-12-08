@@ -1,7 +1,3 @@
-using System.Collections.Immutable;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-
 namespace astar_pathfinding
 {
     public partial class Form1 : Form
@@ -355,8 +351,8 @@ namespace astar_pathfinding
                 Filter = "Text Files|*.txt",
                 Title = "Save Matrix to file"
             };
-            openFile.ShowDialog();
-            
+            _ = openFile.ShowDialog();
+
             // If the file name is not an empty string open it for saving.   
             if (openFile.FileName != "")
             {
@@ -374,7 +370,7 @@ namespace astar_pathfinding
                 Filter = "Text Files|*.txt",
                 Title = "Save Matrix to file"
             };
-            saveFile.ShowDialog();
+            _ = saveFile.ShowDialog();
 
             // If the file name is not an empty string open it for saving.   
             if (saveFile.FileName != "")

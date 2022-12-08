@@ -55,85 +55,13 @@ namespace astar_pathfinding
         public int[] start_ij = new int[2];
         public int[] end_ij = new int[2];
 
-        // Returns path
-        public unsafe bool getPath()
-        {
-            bool endFound = false;
-            uint maxIterations = (uint)globals.X_SIZE * (uint)globals.Y_SIZE;
-            List<Node> unExploredNodes = new(), tempUnExplored;
-            List<Node> exploredNodes = new(){
-                calculateCost(start_ij, null)
-            };
-            Node lowestFCostNode, current = exploredNodes[0];
-            current.parent = null;
-
-            for (uint i = 0; i < maxIterations && endFound == false; i++)
-            {
-                // Search 
-                unExploredNodes.AddRange(getNeighbours(current));
-                unExploredNodes = removeDuplicateNodes(unExploredNodes);
-                unExploredNodes = subtractLists(unExploredNodes, exploredNodes);
-                if (unExploredNodes.Count == 0)
-                {
-                    return false;
-                }
-                else if (1 == 1) // deeperSearch
-                {
-                    tempUnExplored = unExploredNodes;
-                    foreach (Node node in tempUnExplored)
-                    {
-                        unExploredNodes.AddRange(getNeighbours(node));
-                        unExploredNodes = removeDuplicateNodes(unExploredNodes);
-                        unExploredNodes = subtractLists(unExploredNodes, exploredNodes);
-                    }
-                }
-
-                // get lowest f cost
-                lowestFCostNode = unExploredNodes[0];
-                for (int j = 1; j < unExploredNodes.Count; j++)
-                {
-                    if (unExploredNodes[j].f <= lowestFCostNode.f)
-                    {
-                        lowestFCostNode = unExploredNodes[j].f == lowestFCostNode.f
-                            ? (unExploredNodes[j].h < lowestFCostNode.h) ? unExploredNodes[j] : lowestFCostNode
-                            : unExploredNodes[j];
-                    }
-                }
-
-                // pursue it
-                current = lowestFCostNode;
-
-                exploredNodes.Add(lowestFCostNode);
-                matrix[current.ij[0], current.ij[1]] = globals.MATRIX_VALUES["explored"];
-
-                if ((current.ij[0] == end_ij[0]) && (current.ij[1] == end_ij[1]))
-                {
-                    endFound = true;
-                }
-            }
-
-            // get path
-            _ = reversePath(current);
-
-            // remove explored and unexplored nodes
-            if (endFound == false)
-            {
-                removeExploredUnexploredNodes(matrix);
-            }
-
-            return endFound;
-        }
-
-        //https://mat.uab.cat/~alseda/MasterOpt/AStar-Algorithm.pdf
+        // https://mat.uab.cat/~alseda/MasterOpt/AStar-Algorithm.pdf
         // https://en.wikipedia.org/wiki/A*_search_algorithm
         public bool betterGetPath()
         {
             Node lowestCost;
             Node? current;
-            List<Node> open = new(); // nodes that have been visited but not expanded
-            List<Node> close = new(); // nodes that have been visited and expanded
-            List<Node> neighbours;
-            int tentativeScore;
+            List<Node> neighbours, open = new(), close = new();
 
             // Add start node to open list
             open.Add(new()
@@ -156,6 +84,17 @@ namespace astar_pathfinding
                 // Found end
                 if (lowestCost.ij[0] == end_ij[0] && lowestCost.ij[1] == end_ij[1])
                 {
+                    // color explored nodes
+                    foreach (Node node in close)
+                    {
+                        matrix[node.ij[0], node.ij[1]] = globals.MATRIX_VALUES["explored"];
+                    }
+                    foreach (Node node in open)
+                    {
+                        matrix[node.ij[0], node.ij[1]] = globals.MATRIX_VALUES["explored"];
+                    }
+
+                    // color path
                     current = lowestCost;  
                     while (current != null)
                     {
@@ -170,52 +109,14 @@ namespace astar_pathfinding
                 neighbours = getNeighbours(lowestCost);
                 for (int i = 0; i < neighbours.Count; i++)
                 {
-                    /*tentativeScore = lowestCost.g + d(neighbours[i].ij, lowestCost.ij);
-                    if (tentativeScore < neighbours[i].g)
-                    {
-                        neighbours[i].parent = lowestCost;
-                        neighbours[i].g = tentativeScore;
-                        neighbours[i].f = tentativeScore + neighbours[i].g;
+                    if (open.Contains(neighbours[i]) || close.Contains(neighbours[i]))
+                        continue;
 
-                        if (open.Contains(neighbours[i]) == false)
-                            open.Add(neighbours[i]);
-                    }*/
-                    tentativeScore = lowestCost.g + d(neighbours[i].ij, lowestCost.ij);
-                    neighbours[i].g = tentativeScore;
-
-                    if (open.Contains(neighbours[i]))
-                    {
-                        if (neighbours[i].g <= tentativeScore)
-                            continue;
-                    }
-                    else if (close.Contains(neighbours[i]))
-                    {
-                        if (neighbours[i].g <= tentativeScore)
-                            continue;
-                        close.Remove(neighbours[i]);
-                        open.Add(neighbours[i]);
-                    }
-                    else
-                        open.Add(neighbours[i]);
-
+                    open.Add(neighbours[i]);
                 }
             }
 
             return false;
-        }
-
-        private unsafe List<int[]> reversePath(Node current)
-        {
-            List<int[]> reversedPath = new();
-
-            while (current.parent != null)
-            {
-                reversedPath.Add(current.ij);
-                matrix[current.ij[0], current.ij[1]] = globals.MATRIX_VALUES["path"];
-                current = current.parent;
-            }
-
-            return reversedPath;
         }
 
         private Node calculateCost(int[] ij, Node? parent)
@@ -235,49 +136,13 @@ namespace astar_pathfinding
         private List<Node> getNeighbours(Node node)
         {
             List<Node> neighbours = new();
-            Node neighbourTemp;
             int[] ij = node.ij;
-            int offset;
 
-            // left column
-            offset = ij[1] - 1;
-            for (int i = 0; i < 3; i++)
-            {
-                neighbourTemp = calculateCost(new int[] { ij[0] - 1, offset }, node);
-                neighbours.Add(neighbourTemp);
-
-                offset += 1;
-            }
-
-            // top row
-            offset = ij[0] - 1;
-            for (int i = 0; i < 3; i++)
-            {
-                neighbourTemp = calculateCost(new int[] { offset, ij[1] - 1 }, node);
-                neighbours.Add(neighbourTemp);
-
-                offset += 1;
-            }
-
-            // right column
-            offset = ij[1] - 1;
-            for (int i = 0; i < 3; i++)
-            {
-                neighbourTemp = calculateCost(new int[] { ij[0] + 1, offset }, node);
-                neighbours.Add(neighbourTemp);
-
-                offset += 1;
-            }
-
-            // down row
-            offset = ij[0] - 1;
-            for (int i = 0; i < 3; i++)
-            {
-                neighbourTemp = calculateCost(new int[] { offset, ij[1] + 1 }, node);
-                neighbours.Add(neighbourTemp);
-
-                offset += 1;
-            }
+            // get neighbours around node
+            neighbours.Add(calculateCost(new int[] { ij[0] - 1, ij[1] }, node));
+            neighbours.Add(calculateCost(new int[] { ij[0] + 1, ij[1] }, node));
+            neighbours.Add(calculateCost(new int[] { ij[0], ij[1] - 1 }, node));
+            neighbours.Add(calculateCost(new int[] { ij[0], ij[1] + 1 }, node));    
 
             // normalize and remove duplicates
             neighbours = removeDuplicateNodes(neighbours);
@@ -287,33 +152,6 @@ namespace astar_pathfinding
             return neighbours;
         }
 
-        private int newGetH(int[] ij)
-        {
-            int HxDiff = Math.Abs(end_ij[0] - ij[0]);
-            int HyDiff = Math.Abs(end_ij[1] - ij[1]);
-            return HxDiff + HyDiff;
-        }
-
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        private int newGetG(Node node)
-        {
-            if (node == null)
-                return -1;
-
-            int GxMoveCost = node.ij[0] - node.parent.ij[0];
-            int GyMoveCost = node.ij[1] - node.parent.ij[1];
-            int gCost = node.parent.g;
-
-            if (GxMoveCost != 0 && GyMoveCost != 0)
-                gCost += 14;
-            else
-                gCost += 10;
-
-            return gCost;
-        }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-        // My implementation of the heuritics calculation
         private int getHCost(int[] ij)
         {
             int h;
@@ -358,26 +196,6 @@ namespace astar_pathfinding
             return gCost;
         }
 
-        private int d(int[] start, int[] finish)
-        {
-            int dCost;
-            int diff0, diff1; //difference in dimensions
-
-            // Calculate differences
-            diff0 = start[0] > finish[0] ? start[0] - finish[0] : finish[0] - start[0];
-            diff1 = start[1] > finish[1] ? start[1] - finish[1] : finish[1] - start[1];
-
-            // Check for exception
-            if (diff0 < diff1)
-            {
-                (diff0, diff1) = (diff1, diff0);
-            }
-
-            diff0 -= diff1;
-            dCost = (diff0 * 10) + (diff1 * 14);
-
-            return dCost;
-        }
         private Node getLowestFCost(List<Node> nodes)
         {
             Node lowestFCost = nodes[0];
@@ -393,20 +211,6 @@ namespace astar_pathfinding
             }
 
             return lowestFCost;
-        }
-
-        private int searchOpen(List<Node> open, int[] ij)
-        {
-            int index = -1;
-            for (int i = 0; i < open.Count; i++)
-            {
-                if (open[i].ij[0] == ij[0] && open[i].ij[1] == ij[1])
-                {
-                    index = i;
-                    break;
-                }
-            }
-            return index;
         }
 
         private static List<Node> removeDuplicateNodes(List<Node> nodes)
@@ -465,39 +269,6 @@ namespace astar_pathfinding
             }
 
             return removedWalls;
-        }
-
-        // list1 - list2
-        // O(mn)
-        private static List<Node> subtractLists(List<Node> list1, List<Node> list2)
-        {
-            List<Node> newList = new();
-            bool coordsExist;
-            for (int i = 0; i < list1.Count; i++)
-            {
-                coordsExist = false;
-                for (int j = 0; j < list2.Count && coordsExist == false; j++)
-                {
-                    if ((list1[i].ij[0] == list2[j].ij[0]) &&
-                        (list1[i].ij[1] == list2[j].ij[1]))
-                    {
-                        coordsExist = true;
-                    }
-                }
-
-                if (coordsExist == false)
-                {
-                    newList.Add(list1[i]);
-                }
-            }
-
-            return newList;
-        }
-
-        private static void removeExploredUnexploredNodes(int[,] matrix)
-        {
-            utils.removeBidimensionalMatrixValue(matrix, globals.MATRIX_VALUES["explored"], globals.MATRIX_VALUES["empty"]);
-            utils.removeBidimensionalMatrixValue(matrix, globals.MATRIX_VALUES["path"], globals.MATRIX_VALUES["empty"]);
         }
     }
 }
