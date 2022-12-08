@@ -1,8 +1,4 @@
-﻿using System.Drawing.Drawing2D;
-using System.Globalization;
-using System.Reflection;
-
-namespace astar_pathfinding
+﻿namespace astar_pathfinding
 {
     public static class utils
     {
@@ -85,7 +81,7 @@ namespace astar_pathfinding
         }
 
         // i,j\nmatrix(x)^
-        public static string[] exportMatrix() 
+        public static string[] exportMatrix()
         {
             // Clean matrix
             removeBidimensionalMatrixValue(globals.MATRIX_VALUES["path"], globals.MATRIX_VALUES["empty"]);
@@ -108,10 +104,10 @@ namespace astar_pathfinding
             return result.ToArray();
         }
 
-        public static void importMatrix(string[] lines) 
+        public static void importMatrix(string[] lines)
         {
-            int iLen = Int32.Parse(lines[0]);
-            int jLen = Int32.Parse(lines[1]);
+            int iLen = int.Parse(lines[0]);
+            int jLen = int.Parse(lines[1]);
             lines = lines.Skip(2).ToArray();
 
             globals.matrix = get2DMatrix(lines, iLen, jLen);
@@ -124,7 +120,7 @@ namespace astar_pathfinding
             {
                 for (int j = 0; j < jLen; j++)
                 {
-                    output[i, j] = Int32.Parse(input[i * jLen + j]);
+                    output[i, j] = int.Parse(input[(i * jLen) + j]);
                 }
             }
             return output;

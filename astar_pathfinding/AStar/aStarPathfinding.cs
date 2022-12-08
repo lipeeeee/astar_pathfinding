@@ -10,6 +10,8 @@
         // https://en.wikipedia.org/wiki/A*_search_algorithm
         public bool getPath()
         {
+            int newG, dx, dy;
+            bool newPath;
             Node lowestCost;
             List<Node> neighbours, open = new()
             {
@@ -36,9 +38,7 @@
                 for (int i = 0; i < neighbours.Count; i++)
                 {
                     if (!open.Contains(neighbours[i]) && !close.Contains(neighbours[i]))
-                    {
                         open.Add(neighbours[i]);
-                    }
                 }
             }
 

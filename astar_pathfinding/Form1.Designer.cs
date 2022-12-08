@@ -30,6 +30,7 @@
         {
             this.lblCell = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxDiagonal = new System.Windows.Forms.CheckBox();
             this.btnMaze = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
@@ -39,7 +40,6 @@
             this.exportMatrixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.presetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkBoxDiagonal = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -49,7 +49,7 @@
             this.lblCell.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblCell.AutoSize = true;
             this.lblCell.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCell.Location = new System.Drawing.Point(15, 10);
+            this.lblCell.Location = new System.Drawing.Point(3, 34);
             this.lblCell.Name = "lblCell";
             this.lblCell.Size = new System.Drawing.Size(64, 17);
             this.lblCell.TabIndex = 1;
@@ -67,6 +67,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(378, 60);
             this.panel1.TabIndex = 2;
+            // 
+            // checkBoxDiagonal
+            // 
+            this.checkBoxDiagonal.AutoSize = true;
+            this.checkBoxDiagonal.Location = new System.Drawing.Point(3, 6);
+            this.checkBoxDiagonal.Name = "checkBoxDiagonal";
+            this.checkBoxDiagonal.Size = new System.Drawing.Size(73, 19);
+            this.checkBoxDiagonal.TabIndex = 7;
+            this.checkBoxDiagonal.Text = "Diagonal";
+            this.checkBoxDiagonal.UseVisualStyleBackColor = true;
+            this.checkBoxDiagonal.CheckedChanged += new System.EventHandler(this.checkBoxDiagonal_CheckedChanged);
             // 
             // btnMaze
             // 
@@ -149,17 +160,6 @@
             this.presetsToolStripMenuItem.Name = "presetsToolStripMenuItem";
             this.presetsToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.presetsToolStripMenuItem.Text = "Presets";
-            // 
-            // checkBoxDiagonal
-            // 
-            this.checkBoxDiagonal.AutoSize = true;
-            this.checkBoxDiagonal.Location = new System.Drawing.Point(15, 34);
-            this.checkBoxDiagonal.Name = "checkBoxDiagonal";
-            this.checkBoxDiagonal.Size = new System.Drawing.Size(73, 19);
-            this.checkBoxDiagonal.TabIndex = 7;
-            this.checkBoxDiagonal.Text = "Diagonal";
-            this.checkBoxDiagonal.UseVisualStyleBackColor = true;
-            this.checkBoxDiagonal.CheckedChanged += new System.EventHandler(this.checkBoxDiagonal_CheckedChanged);
             // 
             // Form1
             // 

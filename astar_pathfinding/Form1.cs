@@ -1,4 +1,5 @@
 using astar_pathfinding.AStar;
+using System.Drawing.Drawing2D;
 
 namespace astar_pathfinding
 {
@@ -7,6 +8,7 @@ namespace astar_pathfinding
         public List<int[]> subMatrixAdd; // cells to add when mousedown
         private bool mouseDown = false;
         private bool leftClick = false;
+        private bool foundScreen = false;
 
         public Form1()
         {
@@ -128,6 +130,9 @@ namespace astar_pathfinding
 
         private void onMouseClick(object sender, MouseEventArgs e)
         {
+            if (foundScreen)
+                onFoundScreen();
+
             // Brute force to know which cell clicked on
             int[] ij = utils.getCell(e.X, e.Y);
             globals.matrix[ij[0], ij[1]] = e.Button == MouseButtons.Left ? globals.MATRIX_VALUES["wall"] : globals.MATRIX_VALUES["empty"];
@@ -183,20 +188,25 @@ namespace astar_pathfinding
         {
             if (e.KeyCode == Keys.E)
             {
-                // check if end exists already
-                bool foundEnd = false;
-                for (int i = 0; i < globals.matrix.GetLength(0) && foundEnd == false; i++)
+                if (foundScreen)
+                    onFoundScreen();
+                else
                 {
-                    for (int j = 0; j < globals.matrix.GetLength(1) && foundEnd == false; j++)
+                    // check if end exists already
+                    bool foundEnd = false;
+                    for (int i = 0; i < globals.matrix.GetLength(0) && foundEnd == false; i++)
                     {
-                        if (globals.matrix[i, j] == globals.MATRIX_VALUES["end"])
+                        for (int j = 0; j < globals.matrix.GetLength(1) && foundEnd == false; j++)
                         {
-                            globals.matrix[i, j] = globals.MATRIX_VALUES["empty"];
-                            foundEnd = true;
+                            if (globals.matrix[i, j] == globals.MATRIX_VALUES["end"])
+                            {
+                                globals.matrix[i, j] = globals.MATRIX_VALUES["empty"];
+                                foundEnd = true;
+                            }
                         }
                     }
                 }
-
+                
                 // get cell
                 Point relativePoint = PointToClient(Cursor.Position);
                 int[] cell = utils.getCell(relativePoint.X, relativePoint.Y);
@@ -206,16 +216,21 @@ namespace astar_pathfinding
             }
             else if (e.KeyCode == Keys.S)
             {
-                // check if start exists already
-                bool foundStart = false;
-                for (int i = 0; i < globals.matrix.GetLength(0) && foundStart == false; i++)
+                if (foundScreen)
+                    onFoundScreen();
+                else
                 {
-                    for (int j = 0; j < globals.matrix.GetLength(1) && foundStart == false; j++)
+                    // check if start exists already
+                    bool foundStart = false;
+                    for (int i = 0; i < globals.matrix.GetLength(0) && foundStart == false; i++)
                     {
-                        if (globals.matrix[i, j] == globals.MATRIX_VALUES["start"])
+                        for (int j = 0; j < globals.matrix.GetLength(1) && foundStart == false; j++)
                         {
-                            globals.matrix[i, j] = globals.MATRIX_VALUES["empty"];
-                            foundStart = true;
+                            if (globals.matrix[i, j] == globals.MATRIX_VALUES["start"])
+                            {
+                                globals.matrix[i, j] = globals.MATRIX_VALUES["empty"];
+                                foundStart = true;
+                            }
                         }
                     }
                 }
@@ -234,11 +249,17 @@ namespace astar_pathfinding
             }
             else if (e.KeyCode == Keys.Enter)
             {
+                if (foundScreen)
+                    onFoundScreen();
+
                 // send click
                 btnSearchClick(new object(), new EventArgs());
             }
             else if (e.KeyCode == Keys.M)
             {
+                if (foundScreen)
+                    onFoundScreen();
+
                 // send click
                 btnMaze_Click(new object(), new EventArgs());
             }
@@ -304,6 +325,7 @@ namespace astar_pathfinding
 
             if (found)
             {
+                foundScreen = true;
                 globals.matrix[globals.end_ij[0], globals.end_ij[1]] = globals.MATRIX_VALUES["end"];
                 globals.matrix[globals.start_ij[0], globals.start_ij[1]] = globals.MATRIX_VALUES["start"];
             }
@@ -361,6 +383,13 @@ namespace astar_pathfinding
         private void checkBoxDiagonal_CheckedChanged(object sender, EventArgs e)
         {
             globals.diagonal = checkBoxDiagonal.Checked;
+        }
+
+        private void onFoundScreen()
+        {
+                // reset matrix
+                utils.fillBidimensionalMatrix(globals.MATRIX_VALUES["empty"]);
+                foundScreen = false;
         }
     }
 }

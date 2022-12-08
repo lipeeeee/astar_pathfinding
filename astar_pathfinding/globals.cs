@@ -13,8 +13,8 @@ namespace astar_pathfinding
         public static int STRAIGHT_COST = 10; // cost to move foward
         public static int DIAGONAL_COST = 14; // cost to move in diagonal
 
-        public static int[] start_ij = new int[2] { -1 , -1};
-        public static int[] end_ij = new int[2] { -1 , -1};
+        public static int[] start_ij = new int[2] { -1, -1 };
+        public static int[] end_ij = new int[2] { -1, -1 };
 
         public static bool diagonal = true;
 

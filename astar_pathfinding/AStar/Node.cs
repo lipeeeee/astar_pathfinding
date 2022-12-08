@@ -69,7 +69,9 @@ namespace astar_pathfinding.AStar
         // Methods
         private int heuristic()
         {
-            return d(this.ij, globals.end_ij);
+            int dx = Math.Abs(this.ij[0] - globals.end_ij[0]);
+            int dy = Math.Abs(this.ij[1] - globals.end_ij[1]);
+            return globals.STRAIGHT_COST * (dx + dy) + (globals.DIAGONAL_COST - 2 * globals.STRAIGHT_COST) * Math.Min(dx, dy);
         }
 
         private double euclideanH()
