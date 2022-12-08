@@ -24,6 +24,7 @@ namespace astar_pathfinding
             public Node()
             {
 
+
             }
 
             public Node(int[] ij)
