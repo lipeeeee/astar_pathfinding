@@ -1,5 +1,4 @@
 using astar_pathfinding.AStar;
-using System.Drawing.Drawing2D;
 
 namespace astar_pathfinding
 {
@@ -97,7 +96,7 @@ namespace astar_pathfinding
                     {
                         formGraphics.FillRectangle(orangeBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
                     }
-                    else if (globals.matrix[i,j] == globals.MATRIX_VALUES["open"])
+                    else if (globals.matrix[i, j] == globals.MATRIX_VALUES["open"])
                     {
                         formGraphics.FillRectangle(greenBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
                     }
@@ -131,7 +130,9 @@ namespace astar_pathfinding
         private void onMouseClick(object sender, MouseEventArgs e)
         {
             if (foundScreen)
+            {
                 onFoundScreen();
+            }
 
             // Brute force to know which cell clicked on
             int[] ij = utils.getCell(e.X, e.Y);
@@ -189,7 +190,9 @@ namespace astar_pathfinding
             if (e.KeyCode == Keys.E)
             {
                 if (foundScreen)
+                {
                     onFoundScreen();
+                }
                 else
                 {
                     // check if end exists already
@@ -206,7 +209,7 @@ namespace astar_pathfinding
                         }
                     }
                 }
-                
+
                 // get cell
                 Point relativePoint = PointToClient(Cursor.Position);
                 int[] cell = utils.getCell(relativePoint.X, relativePoint.Y);
@@ -217,7 +220,9 @@ namespace astar_pathfinding
             else if (e.KeyCode == Keys.S)
             {
                 if (foundScreen)
+                {
                     onFoundScreen();
+                }
                 else
                 {
                     // check if start exists already
@@ -250,7 +255,9 @@ namespace astar_pathfinding
             else if (e.KeyCode == Keys.Enter)
             {
                 if (foundScreen)
+                {
                     onFoundScreen();
+                }
 
                 // send click
                 btnSearchClick(new object(), new EventArgs());
@@ -258,7 +265,9 @@ namespace astar_pathfinding
             else if (e.KeyCode == Keys.M)
             {
                 if (foundScreen)
+                {
                     onFoundScreen();
+                }
 
                 // send click
                 btnMaze_Click(new object(), new EventArgs());
@@ -318,10 +327,7 @@ namespace astar_pathfinding
 
             bool found;
             aStarPathfinding aStar = new();
-            if (globals.diagonal)
-                found = aStar.getDiagonalPath();
-            else
-                found = aStar.getPath();
+            found = globals.diagonal ? aStar.getDiagonalPath() : aStar.getPath();
 
             if (found)
             {
@@ -387,9 +393,9 @@ namespace astar_pathfinding
 
         private void onFoundScreen()
         {
-                // reset matrix
-                utils.fillBidimensionalMatrix(globals.MATRIX_VALUES["empty"]);
-                foundScreen = false;
+            // reset matrix
+            utils.fillBidimensionalMatrix(globals.MATRIX_VALUES["empty"]);
+            foundScreen = false;
         }
     }
 }

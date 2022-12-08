@@ -10,6 +10,8 @@
         // https://en.wikipedia.org/wiki/A*_search_algorithm
         public bool getPath()
         {
+            int newG;
+            bool newPath;
             Node lowestCost;
             List<Node> neighbours, open = new()
             {
@@ -35,9 +37,32 @@
                 neighbours = getNormalizedNeighbours(lowestCost);
                 for (int i = 0; i < neighbours.Count; i++)
                 {
-                    if (!open.Contains(neighbours[i]) && !close.Contains(neighbours[i]))
+                    if (close.Contains(neighbours[i]))
                     {
+                        continue;
+                    }
+
+                    newPath = false;
+                    newG = lowestCost.g + globals.STRAIGHT_COST;
+                    if (open.Contains(neighbours[i]))
+                    {
+                        if (newG < neighbours[i].g)
+                        {
+                            neighbours[i].g = newG;
+                            newPath = true;
+                        }
+                    }
+                    else
+                    {
+                        neighbours[i].g = newG;
+                        newPath = true;
                         open.Add(neighbours[i]);
+                    }
+
+                    if (newPath)
+                    {
+                        neighbours[i].updateHeuristic();
+                        neighbours[i].parent = lowestCost;
                     }
                 }
             }
