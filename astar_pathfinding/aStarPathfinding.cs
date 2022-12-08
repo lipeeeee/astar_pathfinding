@@ -1,11 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.ApplicationServices;
-using System.Drawing;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Policy;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
-
-namespace astar_pathfinding
+﻿namespace astar_pathfinding
 {
     public class aStarPathfinding
     {
@@ -35,20 +28,25 @@ namespace astar_pathfinding
             }
 
             // override object.Equals
-            public override bool Equals(object? obj) => this.Equals(obj as Node);
+            public override bool Equals(object? obj)
+            {
+                return Equals(obj as Node);
+            }
 
             public bool Equals(Node? obj)
             {
-                if (obj == null || this.GetType() != obj.GetType())
+                if (obj == null || GetType() != obj.GetType())
+                {
                     return false;
+                }
 
-                if (obj.ij[0] == this.ij[0] && obj.ij[1] == this.ij[1])
-                    return true;
-
-                return false;
+                return obj.ij[0] == ij[0] && obj.ij[1] == ij[1];
             }
 
-            public override int GetHashCode() => base.GetHashCode();
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
         }
 
         public int[,] matrix;
@@ -61,24 +59,25 @@ namespace astar_pathfinding
         {
             Node lowestCost;
             Node? current;
-            List<Node> neighbours, open = new(), close = new();
-
-            // Add start node to open list
-            open.Add(new()
+            List<Node> neighbours, open = new()
             {
-                f = 0,
-                h = 0,
-                g = 0,
-                ij = start_ij,
-                parent = null
-            });
-            
+                // Add start node to open list
+                new()
+                {
+                    f = 0,
+                    h = 0,
+                    g = 0,
+                    ij = start_ij,
+                    parent = null
+                }
+            }, close = new();
+
             while (open.Count > 0)
             {
                 // Get lowest f cost in open list
                 lowestCost = getLowestFCost(open);
 
-                open.Remove(lowestCost);
+                _ = open.Remove(lowestCost);
                 close.Add(lowestCost);
 
                 // Found end
@@ -95,7 +94,7 @@ namespace astar_pathfinding
                     }
 
                     // color path
-                    current = lowestCost;  
+                    current = lowestCost;
                     while (current != null)
                     {
                         matrix[current.ij[0], current.ij[1]] = globals.MATRIX_VALUES["path"];
@@ -110,7 +109,9 @@ namespace astar_pathfinding
                 for (int i = 0; i < neighbours.Count; i++)
                 {
                     if (open.Contains(neighbours[i]) || close.Contains(neighbours[i]))
+                    {
                         continue;
+                    }
 
                     open.Add(neighbours[i]);
                 }
@@ -142,7 +143,7 @@ namespace astar_pathfinding
             neighbours.Add(calculateCost(new int[] { ij[0] - 1, ij[1] }, node));
             neighbours.Add(calculateCost(new int[] { ij[0] + 1, ij[1] }, node));
             neighbours.Add(calculateCost(new int[] { ij[0], ij[1] - 1 }, node));
-            neighbours.Add(calculateCost(new int[] { ij[0], ij[1] + 1 }, node));    
+            neighbours.Add(calculateCost(new int[] { ij[0], ij[1] + 1 }, node));
 
             // normalize and remove duplicates
             neighbours = removeDuplicateNodes(neighbours);

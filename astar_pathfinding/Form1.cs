@@ -136,6 +136,7 @@ namespace astar_pathfinding
             if (found != false)
             {
                 matrix[end_ij[0], end_ij[1]] = globals.MATRIX_VALUES["end"];
+                matrix[start_ij[0], start_ij[1]] = globals.MATRIX_VALUES["start"];
             }
             else
             {
