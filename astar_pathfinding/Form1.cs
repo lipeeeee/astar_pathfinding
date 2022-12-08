@@ -1,4 +1,5 @@
 using astar_pathfinding.AStar;
+using System.Diagnostics;
 
 namespace astar_pathfinding
 {
@@ -317,6 +318,14 @@ namespace astar_pathfinding
 
         private void btnSearchClick(object sender, EventArgs e)
         {
+            if (foundScreen)
+            {
+                utils.removeBidimensionalMatrixValue(globals.MATRIX_VALUES["path"], globals.MATRIX_VALUES["empty"]);
+                utils.removeBidimensionalMatrixValue(globals.MATRIX_VALUES["open"], globals.MATRIX_VALUES["empty"]);
+                utils.removeBidimensionalMatrixValue(globals.MATRIX_VALUES["close"], globals.MATRIX_VALUES["empty"]);
+
+            }
+
             // double check start and end node
             int c = getMatrixEndpoints();
             if (c != 2)
@@ -326,14 +335,24 @@ namespace astar_pathfinding
             }
 
             bool found;
+            long timeToComplete;
+            int closeCount = 0, openCount = 0, pathCount = 0;
             aStarPathfinding aStar = new();
-            found = globals.diagonal ? aStar.getDiagonalPath() : aStar.getPath();
-
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            found = globals.diagonal ? aStar.getDiagonalPath(ref closeCount, ref openCount, ref pathCount) 
+                : aStar.getPath(ref closeCount, ref openCount, ref pathCount);
+            watch.Stop();
+            timeToComplete = watch.ElapsedMilliseconds;
             if (found)
             {
                 foundScreen = true;
                 globals.matrix[globals.end_ij[0], globals.end_ij[1]] = globals.MATRIX_VALUES["end"];
                 globals.matrix[globals.start_ij[0], globals.start_ij[1]] = globals.MATRIX_VALUES["start"];
+                lblCounts.Text = "Open: " + openCount + "; Closed: " + closeCount + "\nPath Count: " + pathCount;
+                lblTime.Text = "Time to Complete;\n" + timeToComplete.ToString() + "ms";
+                lblCounts.Visible = true;
+                lblTime.Visible = true;
             }
             else
             {
@@ -396,6 +415,8 @@ namespace astar_pathfinding
             // reset matrix
             utils.fillBidimensionalMatrix(globals.MATRIX_VALUES["empty"]);
             foundScreen = false;
+            lblCounts.Visible = false;
+            lblTime.Visible = false;
         }
     }
 }

@@ -30,6 +30,7 @@
         {
             this.lblCell = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblCounts = new System.Windows.Forms.Label();
             this.checkBoxDiagonal = new System.Windows.Forms.CheckBox();
             this.btnMaze = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
@@ -40,6 +41,7 @@
             this.exportMatrixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.presetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblTime = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -49,7 +51,7 @@
             this.lblCell.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblCell.AutoSize = true;
             this.lblCell.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCell.Location = new System.Drawing.Point(3, 34);
+            this.lblCell.Location = new System.Drawing.Point(134, 8);
             this.lblCell.Name = "lblCell";
             this.lblCell.Size = new System.Drawing.Size(64, 17);
             this.lblCell.TabIndex = 1;
@@ -58,20 +60,34 @@
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.lblTime);
+            this.panel1.Controls.Add(this.lblCounts);
             this.panel1.Controls.Add(this.checkBoxDiagonal);
             this.panel1.Controls.Add(this.btnMaze);
             this.panel1.Controls.Add(this.btnSearch);
             this.panel1.Controls.Add(this.btnClear);
             this.panel1.Controls.Add(this.lblCell);
-            this.panel1.Location = new System.Drawing.Point(12, 378);
+            this.panel1.Location = new System.Drawing.Point(12, 345);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(378, 60);
+            this.panel1.Size = new System.Drawing.Size(421, 93);
             this.panel1.TabIndex = 2;
+            // 
+            // lblCounts
+            // 
+            this.lblCounts.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblCounts.AutoSize = true;
+            this.lblCounts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCounts.Location = new System.Drawing.Point(3, 39);
+            this.lblCounts.Name = "lblCounts";
+            this.lblCounts.Size = new System.Drawing.Size(47, 17);
+            this.lblCounts.TabIndex = 8;
+            this.lblCounts.Text = "Counts";
+            this.lblCounts.Visible = false;
             // 
             // checkBoxDiagonal
             // 
             this.checkBoxDiagonal.AutoSize = true;
-            this.checkBoxDiagonal.Location = new System.Drawing.Point(3, 6);
+            this.checkBoxDiagonal.Location = new System.Drawing.Point(3, 7);
             this.checkBoxDiagonal.Name = "checkBoxDiagonal";
             this.checkBoxDiagonal.Size = new System.Drawing.Size(73, 19);
             this.checkBoxDiagonal.TabIndex = 7;
@@ -82,9 +98,9 @@
             // btnMaze
             // 
             this.btnMaze.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnMaze.Location = new System.Drawing.Point(149, 10);
+            this.btnMaze.Location = new System.Drawing.Point(263, 6);
             this.btnMaze.Name = "btnMaze";
-            this.btnMaze.Size = new System.Drawing.Size(132, 23);
+            this.btnMaze.Size = new System.Drawing.Size(154, 27);
             this.btnMaze.TabIndex = 6;
             this.btnMaze.TabStop = false;
             this.btnMaze.Text = "Random Maze(M)";
@@ -94,7 +110,7 @@
             // btnSearch
             // 
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearch.Location = new System.Drawing.Point(287, 6);
+            this.btnSearch.Location = new System.Drawing.Point(330, 39);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(87, 51);
             this.btnSearch.TabIndex = 0;
@@ -106,9 +122,9 @@
             // btnClear
             // 
             this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClear.Location = new System.Drawing.Point(149, 34);
+            this.btnClear.Location = new System.Drawing.Point(263, 39);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(132, 23);
+            this.btnClear.Size = new System.Drawing.Size(61, 51);
             this.btnClear.TabIndex = 2;
             this.btnClear.TabStop = false;
             this.btnClear.Text = "Clear(C)";
@@ -161,6 +177,18 @@
             this.presetsToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.presetsToolStripMenuItem.Text = "Presets";
             // 
+            // lblTime
+            // 
+            this.lblTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblTime.AutoSize = true;
+            this.lblTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTime.Location = new System.Drawing.Point(134, 39);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(35, 17);
+            this.lblTime.TabIndex = 9;
+            this.lblTime.Text = "Time";
+            this.lblTime.Visible = false;
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnSearch;
@@ -203,5 +231,7 @@
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem presetsToolStripMenuItem;
         private CheckBox checkBoxDiagonal;
+        private Label lblCounts;
+        private Label lblTime;
     }
 }

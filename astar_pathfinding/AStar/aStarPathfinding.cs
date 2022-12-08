@@ -8,7 +8,7 @@
 
         // https://mat.uab.cat/~alseda/MasterOpt/AStar-Algorithm.pdf
         // https://en.wikipedia.org/wiki/A*_search_algorithm
-        public bool getPath()
+        public bool getPath(ref int closeCount, ref int openCount, ref int pathCount)
         {
             int newG;
             bool newPath;
@@ -29,7 +29,9 @@
                 // Found end
                 if (lowestCost.ij[0] == globals.end_ij[0] && lowestCost.ij[1] == globals.end_ij[1])
                 {
-                    retracePath(lowestCost, open, close);
+                    pathCount = retracePath(lowestCost, open, close);
+                    openCount = open.Count;
+                    closeCount = close.Count;
                     return true;
                 }
 
@@ -70,7 +72,7 @@
             return false;
         }
 
-        public bool getDiagonalPath()
+        public bool getDiagonalPath(ref int closeCount, ref int openCount, ref int pathCount)
         {
             int newG, dx, dy;
             bool newPath;
@@ -91,7 +93,9 @@
                 // Found end
                 if (lowestCost.ij[0] == globals.end_ij[0] && lowestCost.ij[1] == globals.end_ij[1])
                 {
-                    retracePath(lowestCost, open, close);
+                    pathCount = retracePath(lowestCost, open, close);
+                    openCount = open.Count;
+                    closeCount = close.Count;
                     return true;
                 }
 
@@ -134,8 +138,9 @@
             return false;
         }
 
-        private static void retracePath(Node? cur, List<Node> open, List<Node> close)
+        private static int retracePath(Node? cur, List<Node> open, List<Node> close)
         {
+            int pathCount = 0;
             // color explored nodes
             foreach (Node node in close)
             {
@@ -151,7 +156,10 @@
             {
                 globals.matrix[cur.ij[0], cur.ij[1]] = globals.MATRIX_VALUES["path"];
                 cur = cur.parent;
+                pathCount++;
             }
+
+            return pathCount;
         }
 
         private static List<Node> getNormalizedNeighbours(Node node)
