@@ -6,67 +6,67 @@ namespace astar_pathfinding
 {
     public static class utils
     {
-        public static void fillBidimensionalMatrix(int[,] matrix, int value)
+        public static void fillBidimensionalMatrix(int value)
         {
             // Backwards for loop for XY coord migration
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < globals.matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < globals.matrix.GetLength(1); j++)
                 {
-                    matrix[i, j] = value;
+                    globals.matrix[i, j] = value;
                 }
             }
         }
 
-        public static void removeBidimensionalMatrixValue(int[,] matrix, int oldValue, int newValue)
+        public static void removeBidimensionalMatrixValue(int oldValue, int newValue)
         {
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < globals.matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < globals.matrix.GetLength(1); j++)
                 {
-                    if (matrix[i, j] == oldValue)
+                    if (globals.matrix[i, j] == oldValue)
                     {
-                        matrix[i, j] = newValue;
+                        globals.matrix[i, j] = newValue;
                     }
                 }
             }
         }
 
-        public static void randomMaze(int[,] matrix)
+        public static void randomMaze()
         {
             Random rnd = new();
 
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < globals.matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < globals.matrix.GetLength(1); j++)
                 {
-                    matrix[i, j] = rnd.Next(0, 2) == 0 ? 0 : 3;
+                    globals.matrix[i, j] = rnd.Next(0, 2) == 0 ? 0 : 3;
                 }
             }
         }
 
-        public static void debugMatrixValues(int[,] matrix)
+        public static void debugMatrixValues()
         {
             Random rnd = new();
 
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < globals.matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < globals.matrix.GetLength(1); j++)
                 {
-                    matrix[i, j] = rnd.Next(0, 4);
+                    globals.matrix[i, j] = rnd.Next(0, 4);
                 }
             }
         }
 
-        public static int[] getCell(int[,] matrix, int x, int y)
+        public static int[] getCell(int x, int y)
         {
             int[] cellXY = new int[2] { -1, -1 };
             int cur_x = 0, cur_y = 0;
 
             // Brute force(figure out better way later)
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < globals.matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < globals.matrix.GetLength(1); j++)
                 {
                     // AABB collision
                     if (cur_x < x + globals.CELL_SIZE && cur_x + globals.CELL_SIZE > x &&
@@ -84,42 +84,37 @@ namespace astar_pathfinding
             return cellXY;
         }
 
-        public static void switchIntegers(ref int a, ref int b)
-        {
-            (b, a) = (a, b);
-        }
-
         // i,j\nmatrix(x)^
-        public static string[] exportMatrix(int[,] matrix) 
+        public static string[] exportMatrix() 
         {
             // Clean matrix
-            removeBidimensionalMatrixValue(matrix, globals.MATRIX_VALUES["path"], globals.MATRIX_VALUES["empty"]);
-            removeBidimensionalMatrixValue(matrix, globals.MATRIX_VALUES["explored"], globals.MATRIX_VALUES["empty"]);
+            removeBidimensionalMatrixValue(globals.MATRIX_VALUES["path"], globals.MATRIX_VALUES["empty"]);
+            removeBidimensionalMatrixValue(globals.MATRIX_VALUES["explored"], globals.MATRIX_VALUES["empty"]);
 
             List<string> result = new()
             {
-                matrix.GetLength(0).ToString(),
-                matrix.GetLength(1).ToString()
+                globals.matrix.GetLength(0).ToString(),
+                globals.matrix.GetLength(1).ToString()
             };
 
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < globals.matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < globals.matrix.GetLength(1); j++)
                 {
-                    result.Add(matrix[i, j].ToString());
+                    result.Add(globals.matrix[i, j].ToString());
                 }
             }
 
             return result.ToArray();
         }
 
-        public static void importMatrix(string[] lines, ref int[,] matrix) 
+        public static void importMatrix(string[] lines) 
         {
             int iLen = Int32.Parse(lines[0]);
             int jLen = Int32.Parse(lines[1]);
             lines = lines.Skip(2).ToArray();
 
-            matrix = get2DMatrix(lines, iLen, jLen);
+            globals.matrix = get2DMatrix(lines, iLen, jLen);
         }
 
         private static int[,] get2DMatrix(string[] input, int iLen, int jLen)

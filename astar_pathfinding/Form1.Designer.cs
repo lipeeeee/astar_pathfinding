@@ -39,6 +39,7 @@
             this.exportMatrixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.presetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBoxDiagonal = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +49,7 @@
             this.lblCell.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblCell.AutoSize = true;
             this.lblCell.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCell.Location = new System.Drawing.Point(16, 24);
+            this.lblCell.Location = new System.Drawing.Point(15, 10);
             this.lblCell.Name = "lblCell";
             this.lblCell.Size = new System.Drawing.Size(64, 17);
             this.lblCell.TabIndex = 1;
@@ -57,19 +58,20 @@
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.checkBoxDiagonal);
             this.panel1.Controls.Add(this.btnMaze);
             this.panel1.Controls.Add(this.btnSearch);
             this.panel1.Controls.Add(this.btnClear);
             this.panel1.Controls.Add(this.lblCell);
             this.panel1.Location = new System.Drawing.Point(12, 378);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(345, 60);
+            this.panel1.Size = new System.Drawing.Size(378, 60);
             this.panel1.TabIndex = 2;
             // 
             // btnMaze
             // 
             this.btnMaze.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnMaze.Location = new System.Drawing.Point(116, 10);
+            this.btnMaze.Location = new System.Drawing.Point(149, 10);
             this.btnMaze.Name = "btnMaze";
             this.btnMaze.Size = new System.Drawing.Size(132, 23);
             this.btnMaze.TabIndex = 6;
@@ -81,7 +83,7 @@
             // btnSearch
             // 
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearch.Location = new System.Drawing.Point(254, 6);
+            this.btnSearch.Location = new System.Drawing.Point(287, 6);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(87, 51);
             this.btnSearch.TabIndex = 0;
@@ -93,7 +95,7 @@
             // btnClear
             // 
             this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClear.Location = new System.Drawing.Point(116, 34);
+            this.btnClear.Location = new System.Drawing.Point(149, 34);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(132, 23);
             this.btnClear.TabIndex = 2;
@@ -126,14 +128,14 @@
             // importMatrixToolStripMenuItem
             // 
             this.importMatrixToolStripMenuItem.Name = "importMatrixToolStripMenuItem";
-            this.importMatrixToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importMatrixToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.importMatrixToolStripMenuItem.Text = "Import Matrix";
             this.importMatrixToolStripMenuItem.Click += new System.EventHandler(this.importMatrixToolStripMenuItem_Click);
             // 
             // exportMatrixToolStripMenuItem
             // 
             this.exportMatrixToolStripMenuItem.Name = "exportMatrixToolStripMenuItem";
-            this.exportMatrixToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportMatrixToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.exportMatrixToolStripMenuItem.Text = "Export Matrix";
             this.exportMatrixToolStripMenuItem.Click += new System.EventHandler(this.exportMatrixToolStripMenuItem_Click);
             // 
@@ -147,6 +149,17 @@
             this.presetsToolStripMenuItem.Name = "presetsToolStripMenuItem";
             this.presetsToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.presetsToolStripMenuItem.Text = "Presets";
+            // 
+            // checkBoxDiagonal
+            // 
+            this.checkBoxDiagonal.AutoSize = true;
+            this.checkBoxDiagonal.Location = new System.Drawing.Point(15, 34);
+            this.checkBoxDiagonal.Name = "checkBoxDiagonal";
+            this.checkBoxDiagonal.Size = new System.Drawing.Size(73, 19);
+            this.checkBoxDiagonal.TabIndex = 7;
+            this.checkBoxDiagonal.Text = "Diagonal";
+            this.checkBoxDiagonal.UseVisualStyleBackColor = true;
+            this.checkBoxDiagonal.CheckedChanged += new System.EventHandler(this.checkBoxDiagonal_CheckedChanged);
             // 
             // Form1
             // 
@@ -189,5 +202,6 @@
         private ToolStripMenuItem exportMatrixToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem presetsToolStripMenuItem;
+        private CheckBox checkBoxDiagonal;
     }
 }
