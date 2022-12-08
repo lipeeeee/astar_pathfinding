@@ -11,6 +11,7 @@ namespace astar_pathfinding
         public Form1()
         {
             InitializeComponent();
+            checkBoxDiagonal.Checked = globals.diagonal;
 
             // Non-Nullable warning
             globals.matrix = new int[0, 0];
@@ -57,10 +58,10 @@ namespace astar_pathfinding
             SolidBrush blackBrush = new(Color.Black);
             SolidBrush redBrush = new(Color.Red);
             SolidBrush greenBrush = new(Color.Green);
-            SolidBrush darkGreenBrush = new(Color.DarkGreen);
             SolidBrush emptyBrush = new(Color.WhiteSmoke);
             SolidBrush cyanBrush = new(Color.DarkCyan);
-            SolidBrush orangeBrush = new(Color.DarkOrange);
+            SolidBrush darkBlueBrush = new(Color.DarkBlue);
+            SolidBrush orangeBrush = new(Color.Orange);
             Graphics formGraphics = CreateGraphics();
 
             int cur_x = 0, cur_y = 0;
@@ -80,7 +81,7 @@ namespace astar_pathfinding
                     }
                     else if (globals.matrix[i, j] == globals.MATRIX_VALUES["start"])
                     {
-                        formGraphics.FillRectangle(greenBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                        formGraphics.FillRectangle(darkBlueBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
                     }
                     else if (globals.matrix[i, j] == globals.MATRIX_VALUES["end"])
                     {
@@ -96,7 +97,7 @@ namespace astar_pathfinding
                     }
                     else if (globals.matrix[i,j] == globals.MATRIX_VALUES["open"])
                     {
-                        formGraphics.FillRectangle(darkGreenBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
+                        formGraphics.FillRectangle(greenBrush, new Rectangle(cur_x, cur_y, globals.CELL_SIZE, globals.CELL_SIZE));
                     }
                     else
                     {
@@ -110,9 +111,9 @@ namespace astar_pathfinding
             }
 
             blackBrush.Dispose();
+            darkBlueBrush.Dispose();
             redBrush.Dispose();
             emptyBrush.Dispose();
-            darkGreenBrush.Dispose();
             cyanBrush.Dispose();
             greenBrush.Dispose();
             orangeBrush.Dispose();

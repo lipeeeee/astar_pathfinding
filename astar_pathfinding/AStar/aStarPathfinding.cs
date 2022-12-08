@@ -75,14 +75,12 @@
                 for (int i = 0; i < neighbours.Count; i++)
                 {
                     if (close.Contains(neighbours[i]))
-                    {
                         continue;
-                    }
 
                     newPath = false;
                     dx = lowestCost.ij[0] - neighbours[i].ij[0];
                     dy = lowestCost.ij[1] - neighbours[i].ij[1];
-                    newG = dx != 0 && dy != 0 ? lowestCost.g + 14 : lowestCost.g + 10;
+                    newG = (dx != 0 && dy != 0) ? lowestCost.g + 14 : lowestCost.g + 10;
                     if (open.Contains(neighbours[i]))
                     {
                         if (newG < neighbours[i].g)
@@ -108,7 +106,7 @@
 
             return false;
         }
-
+       
         private static void retracePath(Node? cur, List<Node> open, List<Node> close)
         {
             // color explored nodes
@@ -146,9 +144,9 @@
 
             for (int i = 1; i < nodes.Count; i++)
             {
-                if (nodes[i].f <= lowestFCost.f)
+                if (nodes[i].getF() <= lowestFCost.getF())
                 {
-                    lowestFCost = nodes[i].f == lowestFCost.f
+                    lowestFCost = nodes[i].getF() == lowestFCost.getF()
                         ? nodes[i].h < lowestFCost.h ? nodes[i] : lowestFCost
                         : nodes[i];
                 }

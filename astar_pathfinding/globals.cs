@@ -16,7 +16,7 @@ namespace astar_pathfinding
         public static int[] start_ij = new int[2] { -1 , -1};
         public static int[] end_ij = new int[2] { -1 , -1};
 
-        public static bool diagonal = false;
+        public static bool diagonal = true;
 
         public static Dictionary<string, int> MATRIX_VALUES = new()
         {

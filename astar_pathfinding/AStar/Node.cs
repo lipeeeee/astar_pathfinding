@@ -13,32 +13,32 @@ namespace astar_pathfinding.AStar
         // Propreties
         public int[] ij // matrix coords
         {
-            get { return ij; }
-            set { ij = value; }
+            get; set;
         } 
         
         public int g // g = distance from starting node (g cost)
         {
-            get { return g; }
-            set { g = value; }
+            get; set;
         }
 
         public int h // h = how far away node is from end node (heuristic)
         {
-            get { return h; }
-            set { h = value; }
+            get; set;
         }
 
         public int f // f = g + h
         {
-            get { return g + this.h; }
-            set { f = value; }
-        } 
+            private get; set;
+        }
+        
+        public int getF()
+        {
+            return this.g + this.h;
+        }
 
         public Node? parent // parent node
         {
-            get { return parent; }
-            set { parent = value; }
+            get; set;
         }
 
         public Node(int[] ij, Node? parent)
@@ -117,11 +117,11 @@ namespace astar_pathfinding.AStar
         {
             if (globals.diagonal)
             {
-                this.g = (int)euclideanH();
+                this.h = (int)Math.Round(euclideanH());
             }
             else
             {
-                this.g = heuristic();
+                this.h = heuristic();
             }
         }
 
