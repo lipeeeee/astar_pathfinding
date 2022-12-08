@@ -323,7 +323,6 @@ namespace astar_pathfinding
                 utils.removeBidimensionalMatrixValue(globals.MATRIX_VALUES["path"], globals.MATRIX_VALUES["empty"]);
                 utils.removeBidimensionalMatrixValue(globals.MATRIX_VALUES["open"], globals.MATRIX_VALUES["empty"]);
                 utils.removeBidimensionalMatrixValue(globals.MATRIX_VALUES["close"], globals.MATRIX_VALUES["empty"]);
-
             }
 
             // double check start and end node
