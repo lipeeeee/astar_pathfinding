@@ -10,8 +10,6 @@
         // https://en.wikipedia.org/wiki/A*_search_algorithm
         public bool getPath()
         {
-            int newG, dx, dy;
-            bool newPath;
             Node lowestCost;
             List<Node> neighbours, open = new()
             {
@@ -23,7 +21,7 @@
                 // Get lowest f cost in open list
                 lowestCost = getLowestFCost(open);
 
-                open.Remove(lowestCost);
+                _ = open.Remove(lowestCost);
                 close.Add(lowestCost);
 
                 // Found end
@@ -38,7 +36,9 @@
                 for (int i = 0; i < neighbours.Count; i++)
                 {
                     if (!open.Contains(neighbours[i]) && !close.Contains(neighbours[i]))
+                    {
                         open.Add(neighbours[i]);
+                    }
                 }
             }
 
@@ -75,7 +75,9 @@
                 for (int i = 0; i < neighbours.Count; i++)
                 {
                     if (close.Contains(neighbours[i]))
+                    {
                         continue;
+                    }
 
                     newPath = false;
                     dx = lowestCost.ij[0] - neighbours[i].ij[0];
@@ -106,7 +108,7 @@
 
             return false;
         }
-       
+
         private static void retracePath(Node? cur, List<Node> open, List<Node> close)
         {
             // color explored nodes

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace astar_pathfinding.AStar
+﻿namespace astar_pathfinding.AStar
 {
     public class Node
     {
@@ -14,8 +6,8 @@ namespace astar_pathfinding.AStar
         public int[] ij // matrix coords
         {
             get; set;
-        } 
-        
+        }
+
         public int g // g = distance from starting node (g cost)
         {
             get; set;
@@ -30,10 +22,10 @@ namespace astar_pathfinding.AStar
         {
             private get; set;
         }
-        
+
         public int getF()
         {
-            return this.g + this.h;
+            return g + h;
         }
 
         public Node? parent // parent node
@@ -45,23 +37,9 @@ namespace astar_pathfinding.AStar
         {
             this.ij = ij;
             this.parent = parent;
-            if (globals.diagonal)
-            {
-                this.h = (int)Math.Round(euclideanH());
-            }
-            else
-            {
-                this.h = heuristic();
-            }
+            h = globals.diagonal ? (int)Math.Round(euclideanH()) : heuristic();
 
-            if (parent != null)
-            {
-                this.g = d(ij, parent.ij);
-            }
-            else
-            {
-                this.g = 0;
-            }
+            g = parent != null ? d(ij, parent.ij) : 0;
 
             // this.f = this.h + this.g;
         }
@@ -69,9 +47,9 @@ namespace astar_pathfinding.AStar
         // Methods
         private int heuristic()
         {
-            int dx = Math.Abs(this.ij[0] - globals.end_ij[0]);
-            int dy = Math.Abs(this.ij[1] - globals.end_ij[1]);
-            return globals.STRAIGHT_COST * (dx + dy) + (globals.DIAGONAL_COST - 2 * globals.STRAIGHT_COST) * Math.Min(dx, dy);
+            int dx = Math.Abs(ij[0] - globals.end_ij[0]);
+            int dy = Math.Abs(ij[1] - globals.end_ij[1]);
+            return (globals.STRAIGHT_COST * (dx + dy)) + ((globals.DIAGONAL_COST - (2 * globals.STRAIGHT_COST)) * Math.Min(dx, dy));
         }
 
         private double euclideanH()
@@ -92,10 +70,10 @@ namespace astar_pathfinding.AStar
             if (!globals.diagonal)
             {
                 // get neighbours around node
-                neighbours.Add(new Node(new int[] { this.ij[0] - 1, this.ij[1] }, this));
-                neighbours.Add(new Node(new int[] { this.ij[0] + 1, this.ij[1] }, this));
-                neighbours.Add(new Node(new int[] { this.ij[0], this.ij[1] - 1 }, this));
-                neighbours.Add(new Node(new int[] { this.ij[0], this.ij[1] + 1 }, this));
+                neighbours.Add(new Node(new int[] { ij[0] - 1, ij[1] }, this));
+                neighbours.Add(new Node(new int[] { ij[0] + 1, ij[1] }, this));
+                neighbours.Add(new Node(new int[] { ij[0], ij[1] - 1 }, this));
+                neighbours.Add(new Node(new int[] { ij[0], ij[1] + 1 }, this));
             }
             else
             {
@@ -117,21 +95,14 @@ namespace astar_pathfinding.AStar
 
         public void updateHeuristic()
         {
-            if (globals.diagonal)
-            {
-                this.h = (int)Math.Round(euclideanH());
-            }
-            else
-            {
-                this.h = heuristic();
-            }
+            h = globals.diagonal ? (int)Math.Round(euclideanH()) : heuristic();
         }
 
         private static int d(int[] ij, int[] xy)
         {
             int dx = Math.Abs(ij[0] - xy[0]);
             int dy = Math.Abs(ij[1] - xy[1]);
-            return globals.STRAIGHT_COST * (dx + dy) + (globals.DIAGONAL_COST - 2 * globals.STRAIGHT_COST) * Math.Min(dx, dy);
+            return (globals.STRAIGHT_COST * (dx + dy)) + ((globals.DIAGONAL_COST - (2 * globals.STRAIGHT_COST)) * Math.Min(dx, dy));
             /*int h;
             int diff0, diff1; //difference in dimensions
 
@@ -160,12 +131,7 @@ namespace astar_pathfinding.AStar
 
         public bool Equals(Node? obj)
         {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            return obj.ij[0] == ij[0] && obj.ij[1] == ij[1];
+            return obj != null && GetType() == obj.GetType() && obj.ij[0] == ij[0] && obj.ij[1] == ij[1];
         }
         public override int GetHashCode()
         {
