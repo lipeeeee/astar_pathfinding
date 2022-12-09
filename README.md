@@ -1,4 +1,13 @@
-# A* Pathfinding Visualization
+<div align="center">
+
+[![C#](https://img.shields.io/badge/Language-C%23-%23239120.svg?style=plastic)](https://en.wikipedia.org/wiki/C%2B%2B)
+![.Net](https://img.shields.io/badge/.NET-5C2D91?style=plastic)
+[![Windows](https://img.shields.io/badge/Platform-Windows-0078d7.svg?style=plastic)](https://en.wikipedia.org/wiki/Microsoft_Windows)
+[![x86](https://img.shields.io/badge/Arch-x86-red.svg?style=plastic)](https://en.wikipedia.org/wiki/X86)
+[![License](https://img.shields.io/github/license/R3nzTheCodeGOD/R3nzSkin.svg?style=plastic)](LICENSE)
+</div>
+
+<h1 style="text-align:center">A* Pathfinding Visualization</h1>
 
 This is my first attempt at creating an efficient A* pathfinding algorithm. **This was made from scratch without any UI/algorithmic library**.
 If there is a path, it will **always** find the shortest way to reach it and then renders it.
