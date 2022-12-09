@@ -165,14 +165,14 @@
             // importMatrixToolStripMenuItem
             // 
             this.importMatrixToolStripMenuItem.Name = "importMatrixToolStripMenuItem";
-            this.importMatrixToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importMatrixToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.importMatrixToolStripMenuItem.Text = "Import Matrix";
             this.importMatrixToolStripMenuItem.Click += new System.EventHandler(this.importMatrixToolStripMenuItem_Click);
             // 
             // exportMatrixToolStripMenuItem
             // 
             this.exportMatrixToolStripMenuItem.Name = "exportMatrixToolStripMenuItem";
-            this.exportMatrixToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportMatrixToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.exportMatrixToolStripMenuItem.Text = "Export Matrix";
             this.exportMatrixToolStripMenuItem.Click += new System.EventHandler(this.exportMatrixToolStripMenuItem_Click);
             // 
@@ -192,7 +192,7 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "a*";
+            this.Text = "a* - lipeeeee";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.onLoad);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.onPaint);
