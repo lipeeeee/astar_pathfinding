@@ -339,7 +339,7 @@ namespace astar_pathfinding
             aStarPathfinding aStar = new();
             Stopwatch watch = new();
             watch.Start();
-            found = globals.diagonal ? aStar.getDiagonalPath(ref closeCount, ref openCount, ref pathCount) 
+            found = globals.diagonal ? aStar.getDiagonalPath(ref closeCount, ref openCount, ref pathCount)
                 : aStar.getPath(ref closeCount, ref openCount, ref pathCount);
             watch.Stop();
             timeToComplete = watch.ElapsedMilliseconds;
