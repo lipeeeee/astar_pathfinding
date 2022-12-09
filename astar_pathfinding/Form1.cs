@@ -337,7 +337,7 @@ namespace astar_pathfinding
             long timeToComplete;
             int closeCount = 0, openCount = 0, pathCount = 0;
             aStarPathfinding aStar = new();
-            Stopwatch watch = new Stopwatch();
+            Stopwatch watch = new();
             watch.Start();
             found = globals.diagonal ? aStar.getDiagonalPath(ref closeCount, ref openCount, ref pathCount) 
                 : aStar.getPath(ref closeCount, ref openCount, ref pathCount);
@@ -384,6 +384,7 @@ namespace astar_pathfinding
                 string[] lines = File.ReadAllLines(openFile.FileName);
                 utils.importMatrix(lines);
                 renderMatrix();
+                foundScreen = false;
             }
         }
 

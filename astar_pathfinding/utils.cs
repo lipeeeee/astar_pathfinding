@@ -85,7 +85,8 @@
         {
             // Clean matrix
             removeBidimensionalMatrixValue(globals.MATRIX_VALUES["path"], globals.MATRIX_VALUES["empty"]);
-            removeBidimensionalMatrixValue(globals.MATRIX_VALUES["explored"], globals.MATRIX_VALUES["empty"]);
+            removeBidimensionalMatrixValue(globals.MATRIX_VALUES["close"], globals.MATRIX_VALUES["empty"]);
+            removeBidimensionalMatrixValue(globals.MATRIX_VALUES["open"], globals.MATRIX_VALUES["empty"]);
 
             List<string> result = new()
             {

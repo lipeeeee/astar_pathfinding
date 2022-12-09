@@ -30,6 +30,7 @@
         {
             this.lblCell = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblTime = new System.Windows.Forms.Label();
             this.lblCounts = new System.Windows.Forms.Label();
             this.checkBoxDiagonal = new System.Windows.Forms.CheckBox();
             this.btnMaze = new System.Windows.Forms.Button();
@@ -40,8 +41,6 @@
             this.importMatrixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportMatrixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.presetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lblTime = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -71,6 +70,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(421, 93);
             this.panel1.TabIndex = 2;
+            // 
+            // lblTime
+            // 
+            this.lblTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblTime.AutoSize = true;
+            this.lblTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTime.Location = new System.Drawing.Point(134, 39);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(35, 17);
+            this.lblTime.TabIndex = 9;
+            this.lblTime.Text = "Time";
+            this.lblTime.Visible = false;
             // 
             // lblCounts
             // 
@@ -135,8 +146,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.matrixToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.presetsToolStripMenuItem});
+            this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -155,14 +165,14 @@
             // importMatrixToolStripMenuItem
             // 
             this.importMatrixToolStripMenuItem.Name = "importMatrixToolStripMenuItem";
-            this.importMatrixToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.importMatrixToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.importMatrixToolStripMenuItem.Text = "Import Matrix";
             this.importMatrixToolStripMenuItem.Click += new System.EventHandler(this.importMatrixToolStripMenuItem_Click);
             // 
             // exportMatrixToolStripMenuItem
             // 
             this.exportMatrixToolStripMenuItem.Name = "exportMatrixToolStripMenuItem";
-            this.exportMatrixToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.exportMatrixToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exportMatrixToolStripMenuItem.Text = "Export Matrix";
             this.exportMatrixToolStripMenuItem.Click += new System.EventHandler(this.exportMatrixToolStripMenuItem_Click);
             // 
@@ -170,24 +180,6 @@
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(12, 20);
-            // 
-            // presetsToolStripMenuItem
-            // 
-            this.presetsToolStripMenuItem.Name = "presetsToolStripMenuItem";
-            this.presetsToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
-            this.presetsToolStripMenuItem.Text = "Presets";
-            // 
-            // lblTime
-            // 
-            this.lblTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblTime.AutoSize = true;
-            this.lblTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTime.Location = new System.Drawing.Point(134, 39);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(35, 17);
-            this.lblTime.TabIndex = 9;
-            this.lblTime.Text = "Time";
-            this.lblTime.Visible = false;
             // 
             // Form1
             // 
@@ -229,7 +221,6 @@
         private ToolStripMenuItem importMatrixToolStripMenuItem;
         private ToolStripMenuItem exportMatrixToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem1;
-        private ToolStripMenuItem presetsToolStripMenuItem;
         private CheckBox checkBoxDiagonal;
         private Label lblCounts;
         private Label lblTime;
